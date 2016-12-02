@@ -1,0 +1,73 @@
+change nautilust to grid -> list
+nautilust smaller icons
+gedit skin
+nautilus show owner + permissions
+install tweak utils, dconf-editor, htopsu
+report - multiple monitor setup not recovered after connectiong to dock station
+install polari, set irc accounts, hexchat
+autorun apps - hexchat
+oaktree
+keyboard shortcuts
+    win+F2
+    win+e
+    win+t
+htop, iotop, wavemon, bwg-mon, nethogs
+report delayed graphs in system monitor
+customize date format in main panel
+enable icons on desktop
+detouched dialogs
+czech keyboard
+install atom
+backup virt-viewer
+virtviewer support fedora 24
+.ssh/keys
+.ssh/config
+install vim
+git config core.editor vim
+git sysconfig/networkscripts/ifcfg-eth... 
+import redhat ca cert to firefox, chrome
+touchpad tap to click, disable natural scrolling
+install maven, make, time
+add ovirt snapshot repo
+sudo dnf install  ovirt-engine-wildfly ovirt-engine-wildfly-overlay
+sudo dnf install otopi
+install all engine compile & runtime requirements (see docker files)    
+init database (see docker file)
+enable & start postgresql service
+create database
+set max_connections in /var/lib/pgsql/data/postgresql.conf
+install docker
+vytvorit sdilene nfs slozky s pravy
+zapnout nfs
+zaopnout nested virtualizaci
+set firefox browser.ctrlTab.previews=true
+virt-viewer
+disable alt+f8, alt+f8 shortcut
+install firefox 26 https://ftp.mozilla.org/pub/firefox/releases/26.0/linux-x86_64/en-US/, remote updater executable
+exectors for firefox 26, idea
+git config --local commit.template config/engine-commit-template.txt
+chmod u+x .git/hooks/commit-msg
+add printer (http://wiki.brq.redhat.com/PrintSettings)
+enable zooming in idea
+o link xdg-open
+dnf install git gui
+vimrc highlighted column for commit messages
+alter imports ordering in engine: static, \n, java, \n, javax, \n, org, \n, com, \n, other
+dnf install gnome-calendar
+add google account for calendar
+dnf remove evolution
+ln -rsf /usr/bin/vim /usr/bin/view
+terminator config file: ~/.config/terminator/...
+
+add repo
+[ovirt-fedora-virt-preview]
+name=Virtualization packages from Rawhide built for latest Fedora
+baseurl=http://fedorapeople.org/groups/virt/virt-preview/fedora-$releasever/$basearch
+enabled=1
+skip_if_unavailable=1
+gpgcheck=0
+
+redhat docker registry
+custom ansible config ~/.ansible.cfg: custom inventory of hosts
+rpm fussion repos
+
