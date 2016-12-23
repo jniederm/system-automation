@@ -1,0 +1,6 @@
+---
+- name: Install python2 dnf module
+  shell: dnf install -y python2-dnf
+  become: yes
+  register: dnf_result
+  changed_when: dnf_result.stdout | regex_search('Nothing to do\\.') == None
