@@ -1,8 +1,0 @@
-# run using: $ ansible-playbook ./playbook.yml -K
----
-- hosts: localhost
-  tasks:
-  - name: Install python dnf
-    shell: dnf install -y python2-dnf
-    become: yes
-

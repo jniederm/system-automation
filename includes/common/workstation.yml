@@ -1,0 +1,17 @@
+---
+# package instalation
+- name: install meld
+  dnf: name=meld state=present
+  become: yes
+- name: install java
+  dnf: name=java-1.8.0-openjdk state=present
+  become: yes
+- name: install git
+  dnf: name=git state=present
+  become: yes
+- name: install gitg
+  dnf: name=gitg state=present
+  become: yes
+- name: Install terminator
+  dnf: name=terminator state=present
+  become: yes

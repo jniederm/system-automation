@@ -1,0 +1,15 @@
+---
+# package instalation
+- name: install vim
+  dnf: name=vim state=present
+  become: yes
+# .bashrc
+- name: alias glog
+  lineinfile:
+    dest: {{ansible_env.HOME}}/.bashrc
+    regexp: "^alias glog="
+    line: "alias glog='git log --oneline --decorate --graph --all'"
+- name: bashrc npm completion
+  lineinfile:
+    dest: {{ansible_env.HOME}}/.bashrc
+    line: ". <(npm completion)"
