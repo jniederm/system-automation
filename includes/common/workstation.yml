@@ -1,5 +1,8 @@
 ---
-# package instalation
+# package installation
+- name: Test var propagation
+  debug:
+    var: git.user_name
 - name: install meld
   dnf: name=meld state=present
   become: yes
@@ -15,3 +18,7 @@
 - name: Install terminator
   dnf: name=terminator state=present
   become: yes
+- name: bashrc npm completion
+  lineinfile:
+    dest: {{ansible_env.HOME}}/.bashrc
+    line: ". <(npm completion)"

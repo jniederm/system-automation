@@ -1,4 +1,4 @@
-# run using: $ ansible-playbook -K ./playbook.yml
+# run using: $ ansible-playbook -K ./main.yml
 ---
 - hosts: localhost
   vars_files:

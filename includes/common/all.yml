@@ -1,15 +1,14 @@
 ---
 # package instalation
+- name: install libselinux-python
+  dnf: name=libselinux-python state=present
+  become: yes
 - name: install vim
-  dnf: name=vim state=present
+  dnf: name='vim-minimal' state=present
   become: yes
 # .bashrc
 - name: alias glog
   lineinfile:
-    dest: {{ansible_env.HOME}}/.bashrc
+    dest: '{{ ansible_env.HOME }}/.bashrc'
     regexp: "^alias glog="
     line: "alias glog='git log --oneline --decorate --graph --all'"
-- name: bashrc npm completion
-  lineinfile:
-    dest: {{ansible_env.HOME}}/.bashrc
-    line: ". <(npm completion)"
