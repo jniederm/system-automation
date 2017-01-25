@@ -1,21 +1,32 @@
 ---
-- name: Add ovirt master snapshot repo
-  yum_repository:
-    name: ovirt-master-snapshot
-    description: Ovirt master snapshot $releasever - $basearch
-    failovermethod: priority
-    baseurl: http://resources.ovirt.org/pub/ovirt-master-snapshot/rpm/fc$releasever
-    enabled: yes
-    gpgcheck: no
-    skip_if_unavailable: yes
-    file: ovirt-master
-  become: yes
+#- name: Add ovirt master snapshot repo
+#  yum_repository:
+#    name: ovirt-master-snapshot
+#    description: Ovirt master snapshot $releasever - $basearch
+#    failovermethod: priority
+#    baseurl: http://resources.ovirt.org/pub/ovirt-master-snapshot/rpm/fc$releasever
+#    enabled: yes
+#    gpgcheck: no
+#    skip_if_unavailable: yes
+#    file: ovirt-master
+#  become: yes
 - name: Add ovirt master snapshot static repo
   yum_repository:
     name: ovirt-master-snapshot-static
     description: Ovirt master snapshot static $releasever - $basearch
     failovermethod: priority
     baseurl: http://resources.ovirt.org/pub/ovirt-master-snapshot-static/rpm/fc$releasever
+    enabled: yes
+    gpgcheck: no
+    skip_if_unavailable: yes
+    file: ovirt-master
+  become: yes
+- name: Add ovirt experimental repo
+  yum_repository:
+    name: ovirt-experimental
+    description: Ovirt experimental $releasever - $basearch
+    failovermethod: priority
+    baseurl: http://resources.ovirt.org/repos/ovirt/experimental/master/latest.tested/rpm/fc$releasever
     enabled: yes
     gpgcheck: no
     skip_if_unavailable: yes
@@ -32,5 +43,3 @@
     skip_if_unavailable: yes
     file: ovirt-fedora-virt-preview
   become: yes
-    
-
