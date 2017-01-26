@@ -1,0 +1,6 @@
+- hosts: f25
+  tasks:
+  - name: start rpcbind
+    systemd: state=started name=rpcbind
+  - name: start vdsmd
+    systemd: state=started name=vdsmd
