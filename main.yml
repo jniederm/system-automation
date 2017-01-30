@@ -3,6 +3,7 @@
 - hosts: localhost
   vars_files:
     - private-vars.yml
+    - vars.yml
   tasks:
   - include: includes/common/install-python-dnf-module.yml
   - include: includes/common/all.yml
@@ -29,4 +30,4 @@
     lineinfile:
       path: "{{ansible_user_dir}}/.bashrc"
       regexp: "^kinit="
-      line: "kinit='kinit {{kinit.username}}'"
+      line: "kinit='kinit {{kinit.user_name}}'"

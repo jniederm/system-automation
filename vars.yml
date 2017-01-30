@@ -1,0 +1,5 @@
+---
+firefox_nightly:
+  url: https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-central/firefox-54.0a1.en-US.linux-x86_64.tar.bz2
+idea:
+  url: https://download.jetbrains.com/idea/ideaIU-2016.3.3.tar.gz
