@@ -2,7 +2,7 @@ change nautilust to grid -> list
 nautilust smaller icons
 gedit skin
 nautilus show owner + permissions
-install tweak utils, dconf-editor, htopsu
+install tweak utils, dconf-editor, htop
 report - multiple monitor setup not recovered after connectiong to dock station
 install polari, set irc accounts, hexchat
 autorun apps - hexchat
@@ -24,14 +24,14 @@ virtviewer support fedora 24
 .ssh/config
 install vim
 git config core.editor vim
-git sysconfig/networkscripts/ifcfg-eth... 
+git sysconfig/networkscripts/ifcfg-eth...
 import redhat ca cert to firefox, chrome
 touchpad tap to click, disable natural scrolling
 install maven, make, time
 add ovirt snapshot repo
 sudo dnf install  ovirt-engine-wildfly ovirt-engine-wildfly-overlay
 sudo dnf install otopi
-install all engine compile & runtime requirements (see docker files)    
+install all engine compile & runtime requirements (see docker files)
 init database (see docker file)
 enable & start postgresql service
 create database
@@ -70,4 +70,3 @@ gpgcheck=0
 redhat docker registry
 custom ansible config ~/.ansible.cfg: custom inventory of hosts
 rpm fussion repos
-
