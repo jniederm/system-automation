@@ -13,9 +13,6 @@
   - name: install virt manager
     dnf: name=virt-manager state=present
     become: yes
-# TODO move to workstation together with private-vars.yml import
-  - git_config: name=user.name scope=global value={{ git.user_name }}
-  - git_config: name=user.email scope=global value={{ git.user_email }}
   - name: install pgadmin3
     dnf: name=pgadmin3 state=present
     become: yes
@@ -24,3 +21,12 @@
     become: yes
   - dnf: name=postgresql-server state=present
     become: yes
+  - dnf: name=virt-preview state=present
+    become: yes
+
+  # Bash aliases
+  - name: kinit
+    lineinfile:
+      path: "{{ansible_user_dir}}/.bashrc"
+      regexp: "^kinit="
+      line: "kinit='kinit {{kinit.username}}'"

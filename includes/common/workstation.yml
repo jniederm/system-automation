@@ -1,8 +1,19 @@
 ---
+#
 # package installation
 - name: Test var propagation
   debug:
     var: git.user_name
+- name: Install rpm fusion free
+  dnf:
+    name: "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ansible_distribution_major_version}}.noarch.rpm"
+    state: present
+  become: yes
+- name: Install rpm fusion non-free
+  dnf:
+    name: "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ansible_distribution_major_version}}.noarch.rpm"
+    state: present
+  become: yes
 - name: install meld
   dnf: name=meld state=present
   become: yes
@@ -12,13 +23,127 @@
 - name: install git
   dnf: name=git state=present
   become: yes
+- name: install git gui
+  dnf: name=git-gui state=present
+  become: yes
 - name: install gitg
   dnf: name=gitg state=present
   become: yes
 - name: Install terminator
   dnf: name=terminator state=present
   become: yes
+- name: Install atom
+  dnf:
+    name: https://atom.io/download/rpm
+    state: present
+  become: yes
+- name: Install dconf-editor
+  dnf:
+    name: dconf-editor
+    state: present
+  become: yes
+- name: Install gnome-tweak-tool
+  dnf:
+    name: gnome-tweak-tool
+    state: present
+  become: yes
+- name: Install chrome
+  dnf:
+    name: https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+    state: present
+  become: yes
+- name: Install chromium
+  dnf:
+    name: chromium
+    state: present
+  become: yes
+- name: Install hexchat
+  dnf:
+    name: hexchat
+    state: present
+  become: yes
+- name: Install vlc
+  dnf:
+    name: vlc
+    state: present
+  become: yes
+- name: Is firefox nightly installed
+  stat:
+    path: "{{ansible_user_dir}}/opt/firefox/latest"
+  register: opt_firefox_latest_stat
+- block:
+    - name: Download and unpack firefox nightly
+      unarchive:
+        src: "{{firefox_nightly.url}}"
+        dest: "{{ansible_user_dir}}/opt/firefox/"
+        remote_src: yes
+    - name: Rename directory of firefox nightly
+      commane: "mv {{ansible_user_dir}}/opt/firefox/firefox {{ansible_user_dir}}/opt/firefox/latest"
+  when: not opt_firefox_latest_stat.stat.isdir
+- name: Create firefox nightly executable
+  copy:
+    content: |
+      #!/bin/sh
+      {{ansible_user_dir}}/opt/firefox/latest/firefox.sh
+    dest: {{ansible_user_dir}}/bin/nightly
+    mode: u+rwx
+- name: Install node.js
 - name: bashrc npm completion
   lineinfile:
-    dest: {{ansible_env.HOME}}/.bashrc
+    dest: "{{ansible_env.HOME}}/.bashrc"
     line: ". <(npm completion)"
+- name: Node in path
+  lineinfile:
+    path: "{{ansible_usr_dir}}/.bash_profile"
+    regexp: "PATH:=.*{{ansible_usr_dir}}/opt/node/bin.*"
+    line: "PATH:={{ansible_usr_dir}}/opt/node/bin:$PATH"
+    insertbefore: "export PATH"
+- name: Is Idea installed?
+  stat:
+    path: "{{ansible_user_dir}}/opt/idea/latest"
+  register: opt_idea_latest_stat
+- block:
+  - name: Install Idea IntelliJ
+  when: not opt_idea_latest_stat.stata.isdir
+- name: Install htop
+  dnf:
+    name: htop
+    state: present
+  become: yes
+- name: Install time
+  dnf:
+    name: time
+    state: present
+  become: yes
+- name: Install make
+  dnf:
+    name: make
+    state: present
+  become: yes
+- name: Install iotop
+  dnf:
+    name: iotop
+    state: present
+  become: yes
+- name: Install nethogs
+  dnf:
+    name: nethogs
+    state: present
+  become: yes
+- name: Install wavemon
+  dnf:
+    name: wavemon
+    state: present
+  become: yes
+
+# Bash aliases
+- name: alias glog
+  lineinfile:
+    path: "{{ansible_user_dir}}/.bashrc"
+    regexp: "^glog="
+    line: "alias glog='git log --oneline --decorate --graph --all'"
+
+- name: git user name
+  git_config: name=user.name scope=global value={{ git.user_name }}
+- name: git email
+  git_config: name=user.email scope=global value={{ git.user_email }}
