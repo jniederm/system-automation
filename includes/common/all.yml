@@ -6,3 +6,6 @@
 - name: install vim-enhanced
   dnf: name='vim-enhanced' state=present
   become: yes
+- name: install htop
+  dnf: name='htop' state=present
+  become: yes
