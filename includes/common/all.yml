@@ -6,9 +6,3 @@
 - name: install vim
   dnf: name='vim-minimal' state=present
   become: yes
-# .bashrc
-- name: alias glog
-  lineinfile:
-    dest: '{{ ansible_env.HOME }}/.bashrc'
-    regexp: "^alias glog="
-    line: "alias glog='git log --oneline --decorate --graph --all'"
