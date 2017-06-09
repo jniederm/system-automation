@@ -135,6 +135,11 @@
     name: wavemon
     state: present
   become: yes
+- name: Install gvim
+  dnf:
+    name: gvim
+    state: present
+  become: yes
 
 # Bash aliases
 - name: alias glog
