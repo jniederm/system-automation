@@ -3,6 +3,6 @@
 - name: install libselinux-python
   dnf: name=libselinux-python state=present
   become: yes
-- name: install vim
-  dnf: name='vim-minimal' state=present
+- name: install vim-enhanced
+  dnf: name='vim-enhanced' state=present
   become: yes
