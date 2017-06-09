@@ -29,35 +29,35 @@
   - name: alias kinit
     lineinfile:
       path: "{{ansible_user_dir}}/.bashrc"
-      regexp: "^kinit="
+      regexp: '^\s*alias kinit='
       line: "alias kinit='kinit {{kinit.user_name}}'"
   - name: alias ovirt-compile-engine
     lineinfile:
       path: "{{ansible_user_dir}}/.bashrc"
-      regexp: "^ovirt-compile-engine="
+      regexp: '^\s*alias ovirt-compile-engine='
       line: "alias ovirt-compile-engine='time make clean install-dev PREFIX=~/target BUILD_UT=0 BUILD_GWT_USERPORTAL=0 BUILD_GWT_WEBADMIN=1 DEV_EXTRA_BUILD_FLAGS_GWT_DEFAULTS=-Dgwt.userAgent=gecko1_8 DEV_BUILD_GWT_DRAFT=1'"
   - name: alias ovirt-incremental-compile-engine
     lineinfile:
       path: "{{ansible_user_dir}}/.bashrc"
-      regexp: "^ovirt-incremental-compile-engine="
-      line: "alias ovirt-incremental-compile-engine='time make clean install-dev PREFIX=~/target BUILD_UT=0 BUILD_GWT_USERPORTAL=0 BUILD_GWT_WEBADMIN=1 DEV_EXTRA_BUILD_FLAGS_GWT_DEFAULTS=-Dgwt.userAgent=gecko1_8 DEV_BUILD_GWT_DRAFT=1 EXTRA_BUILD_FLAGS=\"-pl org.ovirt.engine.core:common,org.ovirt.engine.core:bll,org.ovirt.engine.core:vdsbroker,org.ovirt.engine.core:utils,org.ovirt.engine:engine-server-ear\"'"
+      regexp: '^\s*alias ovirt-incremental-compile-engine='
+      line: "alias ovirt-incremental-compile-engine='time make install-dev PREFIX=~/target BUILD_UT=0 BUILD_GWT_USERPORTAL=0 BUILD_GWT_WEBADMIN=1 DEV_EXTRA_BUILD_FLAGS_GWT_DEFAULTS=-Dgwt.userAgent=gecko1_8 DEV_BUILD_GWT_DRAFT=1 EXTRA_BUILD_FLAGS=\"-pl org.ovirt.engine.core:common,org.ovirt.engine.core:bll,org.ovirt.engine.core:vdsbroker,org.ovirt.engine.core:utils,org.ovirt.engine:engine-server-ear\" DEV_EXTRA_BUILD_FLAGS=\"-Dcheckstyle.skip=true\"'"
   - name: alias ovirt-debug-webadmin
     lineinfile:
       path: "{{ansible_user_dir}}/.bashrc"
-      regexp: "^ovirt-debug-webadmin="
+      regexp: '^\s*alias ovirt-debug-webadmin='
       line: "alias ovirt-debug-webadmin='make gwt-debug DEBUG_MODULE=webadmin'"
   - name: alias ovirt-debug-userportal
     lineinfile:
       path: "{{ansible_user_dir}}/.bashrc"
-      regexp: "^ovirt-debug-userportal="
+      regexp: '^\s*alias ovirt-debug-userportal='
       line: "alias ovirt-debug-userportal='make gwt-debug DEBUG_MODULE=userportal-gwtp'"
   - name: alias ovirt-configure-engine
     lineinfile:
       path: "{{ansible_user_dir}}/.bashrc"
-      regexp: "^ovirt-configure-engine="
+      regexp: '^\s*alias ovirt-configure-engine='
       line: "alias ovirt-configure-engine='~/target/bin/engine-setup'"
-  - name: alias ovirt-compile-engine-lite
+  - name: alias no-checkstyle
     lineinfile:
       path: "{{ansible_user_dir}}/.bashrc"
-      regexp: "^ovirt-compile-engine-lite="
-      line: "alias ovirt-compile-engine-lite='time make install-dev PREFIX=~/target BUILD_UT=0 BUILD_GWT_USERPORTAL=0 BUILD_GWT_WEBADMIN=1 DEV_EXTRA_BUILD_FLAGS_GWT_DEFAULTS=-Dgwt.userAgent=gecko1_8 DEV_BUILD_GWT_DRAFT=1 EXTRA_BUILD_FLAGS=-Dcheckstyle.skip=true'"
+      regexp: '^\s*alias no-checkstyle='
+      line: "alias no-checkstyle='DEV_EXTRA_BUILD_FLAGS=\"-Dcheckstyle.skip=true\"'"
