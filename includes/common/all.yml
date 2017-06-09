@@ -9,3 +9,10 @@
 - name: install htop
   dnf: name='htop' state=present
   become: yes
+
+# Bash aliases
+- name: alias clean-terminal
+  lineinfile:
+    path: "{{ansible_user_dir}}/.bashrc"
+    regexp: "alias clean-teminal="
+    line: "alias clean-teminal='echo -en \"\\ec\"'"
