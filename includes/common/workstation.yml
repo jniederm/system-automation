@@ -1,9 +1,6 @@
 ---
 #
 # package installation
-- name: Test var propagation
-  debug:
-    var: git.user_name
 - name: Install rpm fusion free
   dnf:
     name: "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ansible_distribution_major_version}}.noarch.rpm"
@@ -32,11 +29,11 @@
 - name: Install terminator
   dnf: name=terminator state=present
   become: yes
-- name: Install atom
-  dnf:
-    name: https://atom.io/download/rpm
-    state: present
-  become: yes
+#- name: Install atom
+#  dnf:
+#    name: https://atom.io/download/rpm
+#    state: present
+#  become: yes
 - name: Install dconf-editor
   dnf:
     name: dconf-editor
@@ -71,45 +68,40 @@
   stat:
     path: "{{ansible_user_dir}}/opt/firefox/latest"
   register: opt_firefox_latest_stat
-- block:
-    - name: Download and unpack firefox nightly
-      unarchive:
-        src: "{{firefox_nightly.url}}"
-        dest: "{{ansible_user_dir}}/opt/firefox/"
-        remote_src: yes
-    - name: Rename directory of firefox nightly
-      commane: "mv {{ansible_user_dir}}/opt/firefox/firefox {{ansible_user_dir}}/opt/firefox/latest"
-  when: not opt_firefox_latest_stat.stat.isdir
-- name: Create firefox nightly executable
-  copy:
-    content: |
-      #!/bin/sh
-      {{ansible_user_dir}}/opt/firefox/latest/firefox.sh
-    dest: {{ansible_user_dir}}/bin/nightly
-    mode: u+rwx
-- name: Install node.js
+# - block:
+#    - name: Download and unpack firefox nightly
+#      unarchive:
+#        src: "{{firefox_nightly.url}}"
+#        dest: "{{ansible_user_dir}}/opt/firefox/"
+#        remote_src: yes
+#    - name: Rename directory of firefox nightly
+#      command: "mv {{ansible_user_dir}}/opt/firefox/firefox {{ansible_user_dir}}/opt/firefox/latest"
+#  when: not opt_firefox_latest_stat.stat.isdir
+#- name: Create firefox nightly executable
+#  copy:
+#    content: |
+#      #!/bin/sh
+#      {{ansible_user_dir}}/opt/firefox/latest/firefox.sh
+#    dest: "{{ansible_user_dir}}/bin/nightly"
+#    mode: u+rwx
+#- name: Install node.js
 - name: bashrc npm completion
   lineinfile:
     dest: "{{ansible_env.HOME}}/.bashrc"
     line: ". <(npm completion)"
-- name: Node in path
-  lineinfile:
-    path: "{{ansible_usr_dir}}/.bash_profile"
-    regexp: "PATH:=.*{{ansible_usr_dir}}/opt/node/bin.*"
-    line: "PATH:={{ansible_usr_dir}}/opt/node/bin:$PATH"
-    insertbefore: "export PATH"
+#- name: Node in path
+#  lineinfile:
+#    path: "{{ansible_usr_dir}}/.bash_profile"
+#    regexp: "PATH:=.*{{ansible_usr_dir}}/opt/node/bin.*"
+#    line: "PATH:={{ansible_usr_dir}}/opt/node/bin:$PATH"
+#    insertbefore: "export PATH"
 - name: Is Idea installed?
   stat:
     path: "{{ansible_user_dir}}/opt/idea/latest"
   register: opt_idea_latest_stat
-- block:
-  - name: Install Idea IntelliJ
-  when: not opt_idea_latest_stat.stata.isdir
-- name: Install htop
-  dnf:
-    name: htop
-    state: present
-  become: yes
+#- block:
+#  - name: Install Idea IntelliJ
+#  when: not opt_idea_latest_stat.stata.isdir
 - name: Install time
   dnf:
     name: time
