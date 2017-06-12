@@ -1,4 +1,4 @@
-change nautilust to grid -> list
+change nautilust to grid -> list 
 nautilust smaller icons
 gedit skin
 nautilus show owner + permissions
