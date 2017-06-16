@@ -14,5 +14,5 @@
 - name: alias clean-terminal
   lineinfile:
     path: "{{ansible_user_dir}}/.bashrc"
-    regexp: '^\s*alias clean-teminal='
-    line: "alias clean-teminal='echo -en \"\\ec\"'"
+    regexp: '^\s*alias clean-terminal='
+    line: "alias clean-terminal='echo -en \"\\ec\"'"
