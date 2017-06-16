@@ -1,6 +1,75 @@
 ---
-#
-# package installation
+- name: install gsettings
+  dnf:
+    name: glib2
+    state: present
+  become: true
+- name: touchpad - tap to click
+  command: dconf write /org/gnome/desktop/peripherals/touchpad/tap-to-click true
+- name: touchpad - disable natural scrilling
+  command: dconf write /org/gnome/desktop/peripherals/touchpad/natural-scroll false
+- name: show date in main bar
+  command: dconf write /org/gnome/desktop/interface/clock-show-date true
+- name: show seconds in main bar
+  command: dconf write /org/gnome/desktop/interface/clock-show-seconds true
+- name: workspaces on all displays
+  command: dconf write /org/gnome/shell/overrides/workspaces-only-on-primary false
+- name: middle click to vertically maximize window
+  command: dconf write /org/gnome/desktop/wm/preferences/action-middle-click-titlebar "'toggle-maximize-vertically'"
+- name: gedit
+  block:
+    - name: don't split words over lines
+      command: dconf write /org/gnome/gedit/preferences/editor/wrap-last-split-mode "'word'"
+    - name: show line numbers
+      command: dconf write /org/gnome/gedit/preferences/editor/display-line-numbers true
+    - name: show right margin
+      command: dconf write /org/gnome/gedit/preferences/editor/display-right-margin true
+    - name: right margin position
+      command: dconf write /org/gnome/gedit/preferences/editor/right-margin-position 'uint32 100'
+    - name: display overview map
+      command: dconf write /org/gnome/gedit/preferences/editor/display-overview-map true
+    - name: hightlight current line
+      command: dconf write /org/gnome/gedit/preferences/editor/highlight-current-line true
+    - name: highlight matching bracket 
+      command: dconf write /org/gnome/gedit/preferences/editor/bracket-matching true
+    - name: tab size
+      command: dconf write /org/gnome/gedit/preferences/editor/tabs-size 'uint32 4'
+    - name: insert spaces instead of tab
+      command: dconf write /org/gnome/gedit/preferences/editor/insert-spaces true
+    - name: auto indent
+      command: dconf write /org/gnome/gedit/preferences/editor/auto-indent true
+    - name: color scheme
+      command: dconf write /org/gnome/gedit/preferences/editor/scheme "'oblivion'"
+- name: 'gtk: perfer dark theme'
+  ini_file:
+    dest: "{{ansible_user_dir}}/.config/gtk-3.0/settings.ini"
+    section: Settings
+    option: gtk-application-prefer-dark-theme
+    value: '1'
+    backup: yes
+    create: false
+- name: detach dialogs
+  command: gsettings set org.gnome.shell.overrides attach-modal-dialogs false
+- name: run dialog shortcut
+  command: gsettings set org.gnome.desktop.wm.keybindings panel-run-dialog "['<Super>F2']"
+- name: file explorer shortcut
+  command: gsettings set org.gnome.settings-daemon.plugins.media-keys home '<Super>e'
+- name: tilix
+  block:
+    - name: tilix enable mouse wheel scrolling
+      command: gsettings set com.gexperts.Tilix.Settings control-scroll-zoom true
+- name: keyboard layouts
+  command: "gsettings set org.gnome.desktop.input-sources sources \"[('xkb', 'us'), ('xkb', 'cz')]\""
+- name: remove Evolution
+  dnf:
+    name: evolution
+    state: absent
+  become: yes
+- name: install gimp
+  dnf:
+    name: gimp
+    state: present
+  become: true
 - name: Install rpm fusion free
   dnf:
     name: "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ansible_distribution_major_version}}.noarch.rpm"
@@ -11,8 +80,20 @@
     name: "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ansible_distribution_major_version}}.noarch.rpm"
     state: present
   become: yes
+- name: install gstreamer1-libav
+  dnf: name=gstreamer1-libav state=present
+  become: yes
+- name: install gstreamer1-plugins-ugly
+  dnf: name=gstreamer1-plugins-ugly state=present
+  become: yes
 - name: install meld
   dnf: name=meld state=present
+  become: yes
+- name: install aspell-cs
+  dnf: name=aspell-cs state=present
+  become: yes
+- name: install hunspell-cs
+  dnf: name=hunspell-cs state=present
   become: yes
 - name: install java
   dnf: name=java-1.8.0-openjdk state=present
@@ -28,6 +109,9 @@
   become: yes
 - name: Install terminator
   dnf: name=terminator state=present
+  become: yes
+- name: Install tilix
+  dnf: name=tilix state=present
   become: yes
 #- name: Install atom
 #  dnf:
@@ -66,7 +150,7 @@
   become: yes
 - name: Is firefox nightly installed
   stat:
-    path: "{{ansible_user_dir}}/opt/firefox/latest"
+    path: "{{ansible_user_dir}}/opt/firefox/nightly/latest"
   register: opt_firefox_latest_stat
 # - block:
 #    - name: Download and unpack firefox nightly

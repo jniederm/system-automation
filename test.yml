@@ -1,0 +1,19 @@
+# run using: $ ansible-playbook -K ./main.yml
+---
+- hosts: localhost
+  vars_files:
+    - private-vars.yml
+    - vars.yml
+  tasks:
+  - dnf:
+      state: present
+      name: meld
+    become: True
+#    async: 300
+#    poll: 0
+  - dnf:
+      state: present
+      name: tilix
+    become: True
+#    async: 300
+#    poll: 0

@@ -1,5 +1,5 @@
 ---
-# package instalation
+# package installation
 - name: install libselinux-python
   dnf: name=libselinux-python state=present
   become: yes
