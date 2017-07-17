@@ -1,4 +1,6 @@
 ---
+# migrate gconf settings to https://github.com/jistr/ansible-gsetting, https://github.com/jistr/ansible-dconf
+# plugin can be part of dictionary
 - name: install gsettings
   dnf:
     name: glib2
