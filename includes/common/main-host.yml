@@ -21,6 +21,7 @@
     skip_if_unavailable: yes
     file: ovirt-master
   become: yes
+#TODO replace by master
 - name: Add ovirt experimental repo
   yum_repository:
     name: ovirt-experimental
@@ -32,6 +33,7 @@
     skip_if_unavailable: yes
     file: ovirt-master
   become: yes
+# TODO replace by https://fedorapeople.org/groups/virt/virt-preview/fedora-virt-preview.repo
 - name: Add ovirt fedora virt preview repo
   yum_repository:
     name: ovirt-fedora-virt-preview
