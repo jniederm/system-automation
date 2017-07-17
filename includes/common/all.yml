@@ -16,3 +16,12 @@
     path: "{{ansible_user_dir}}/.bashrc"
     regexp: '^\s*alias clean-terminal='
     line: "alias clean-terminal='echo -en \"\\ec\"'"
+- name: enlarge bash history size
+  lineinfile:
+    path: {{ansible_user_dir}}/.bash_profile
+    regexp: '\WHISTSIZE='
+    line: 'export HISTSIZE=10000'
+- name: save bash history each prompt
+    path: {{ansible_user_dir}}/.bash_profile
+    regexp: '\WPROMPT_COMMAND=.*history -a;'
+    line: 'export PROMPT_COMMAND="history -a; ${PROMPT_COMMAND}"'
