@@ -1,0 +1,18 @@
+- name: Microsoft packages key
+  rpm_key:
+    state: present
+    key: https://packages.microsoft.com/keys/microsoft.asc
+  become: yes
+- name: Visual Studio Code repo
+  yum_repository:
+    name: vscode # name of *.repo file and section header:q
+    baseurl: https://packages.microsoft.com/yumrepos/vscode
+    enabled: yes
+    gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+    description: "Visual Studio Code" # 'name' field inside the file
+  become: yes
+- name: Install Visual Studio Code
+  dnf:
+    name: code
+    state: present
+  become: yes

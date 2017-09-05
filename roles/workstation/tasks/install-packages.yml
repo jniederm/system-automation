@@ -1,0 +1,105 @@
+---
+- name: Install rpm fusion free
+  dnf:
+    name: "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ansible_distribution_major_version}}.noarch.rpm"
+    state: present
+  become: yes
+- name: Install rpm fusion non-free
+  dnf:
+    name: "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ansible_distribution_major_version}}.noarch.rpm"
+    state: present
+  become: yes
+- name: install gsettings
+  dnf:
+    name: glib2
+    state: present
+  become: true
+- name: remove Evolution
+  dnf:
+    name: evolution
+    state: absent
+  become: yes
+- name: install gimp
+  dnf:
+    name: gimp
+    state: present
+  become: true
+- name: install gstreamer1-libav
+  dnf: name=gstreamer1-libav state=present
+  become: yes
+- name: install gstreamer1-plugins-ugly
+  dnf: name=gstreamer1-plugins-ugly state=present
+  become: yes
+- name: install meld
+  dnf: name=meld state=present
+  become: yes
+- name: install aspell-cs
+  dnf: name=aspell-cs state=present
+  become: yes
+- name: install hunspell-cs
+  dnf: name=hunspell-cs state=present
+  become: yes
+- name: install java
+  dnf: name=java-1.8.0-openjdk state=present
+  become: yes
+- name: install git
+  dnf: name=git state=present
+  become: yes
+- name: install git gui
+  dnf: name=git-gui state=present
+  become: yes
+- name: install gitg
+  dnf: name=gitg state=present
+  become: yes
+- name: Install terminator
+  dnf: name=terminator state=present
+  become: yes
+- name: Install tilix
+  dnf: name=tilix state=present
+  become: yes
+  ignore_errors: yes
+- name: Install dconf-editor
+  dnf:
+    name: dconf-editor
+    state: present
+  become: yes
+- name: Install gnome-tweak-tool
+  dnf:
+    name: gnome-tweak-tool
+    state: present
+  become: yes
+- name: Install chromium
+  dnf:
+    name: chromium
+    state: present
+  become: yes
+- name: Install hexchat
+  dnf:
+    name: hexchat
+    state: present
+  become: yes
+- name: Install vlc
+  dnf:
+    name: vlc
+    state: present
+  become: yes
+- name: Install mpv
+  dnf:
+    name: mpv
+    state: present
+  become: yes
+- name: Install chrome
+  dnf:
+    name: https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+    state: present
+  become: yes
+- name: Install docker
+  dnf:
+    name: docker
+    state: present
+  become: yes
+- name: Install httpie
+  dnf:
+    name: httpie
+    state: present
+  become: yes

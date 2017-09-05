@@ -1,0 +1,31 @@
+---
+- name: Install autoconf
+  dnf:
+    name: autoconf
+    state: present
+  become: yes
+- name: Install automake
+  dnf:
+    name: automake
+    state: present
+  become: yes
+- name: Install rpm-build
+  dnf:
+    name: rpm-build
+    state: present
+  become: yes
+- name: Install ovirt-engine-nodejs
+  dnf:
+    name: ovirt-engine-nodejs
+    state: present
+  become: yes
+- name: Install ovirt-engine-nodejs-modules
+  dnf:
+    name: ovirt-engine-nodejs-modules
+    state: present
+  become: yes
+- name: Install ovirt-engine-yarn
+  dnf:
+    name: ovirt-engine-yarn
+    state: present
+  become: yes

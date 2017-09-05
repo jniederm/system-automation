@@ -1,0 +1,22 @@
+---
+- name: Create GOPATH directory
+  file:
+    path: '{{ ansible_user_dir}}/go'
+    state: directory
+- name: Set GOPATH environment variable
+  lineinfile:
+    path: "{{ ansible_user_dir }}/.bash_profile"
+    regexp: '^GOPATH='
+    line: 'GOPATH={{ ansible_user_dir}}/go'
+- name: Set GOPATH environment variable
+  lineinfile:
+    path: "{{ ansible_user_dir }}/.bash_profile"
+    insertbefore: '^(EXPORT )?PATH='
+    regexp: '^GOPATH='
+    line: 'GOPATH=$HOME/go'
+- name: Add GOPATH/bin to PATH
+  lineinfile:
+    path: "{{ ansible_user_dir }}/.bash_profile"
+    insertafter: '^(EXPORT )?GOPATH'
+    regexp: '^PATH=.*\$GOPATH/bin'
+    line: 'PATH=$GOPATH/bin:$PATH'

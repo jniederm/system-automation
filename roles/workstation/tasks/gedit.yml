@@ -1,0 +1,29 @@
+---
+- name: "do not split words over lines"
+  command: dconf write /org/gnome/gedit/preferences/editor/wrap-last-split-mode "'word'"
+- name: show line numbers
+  command: dconf write /org/gnome/gedit/preferences/editor/display-line-numbers true
+- name: show right margin
+  command: dconf write /org/gnome/gedit/preferences/editor/display-right-margin true
+- name: right margin position
+  command: dconf write /org/gnome/gedit/preferences/editor/right-margin-position 'uint32 100'
+- name: display overview map
+  command: dconf write /org/gnome/gedit/preferences/editor/display-overview-map true
+- name: hightlight current line
+  command: dconf write /org/gnome/gedit/preferences/editor/highlight-current-line true
+- name: highlight matching bracket 
+  command: dconf write /org/gnome/gedit/preferences/editor/bracket-matching true
+- name: tab size
+  command: dconf write /org/gnome/gedit/preferences/editor/tabs-size 'uint32 4'
+- name: insert spaces instead of tab
+  command: dconf write /org/gnome/gedit/preferences/editor/insert-spaces true
+- name: auto indent
+  command: dconf write /org/gnome/gedit/preferences/editor/auto-indent true
+- name: color scheme
+  command: dconf write /org/gnome/gedit/preferences/editor/scheme "'oblivion'"
+# failing
+# - name: gedit do not split words over lines
+  # gsetting:
+    # user: "{{ username }}"
+    # key: org.gnome.gedit.preferences.editor.wrap-last-split-mode
+    # value: "'word'"

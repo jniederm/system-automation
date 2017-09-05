@@ -1,0 +1,20 @@
+---
+- name: Install krb5-workstation
+  dnf:
+    name: krb5-workstation
+    state: present
+  become: yes
+- name: alias kinit
+  lineinfile:
+    path: "{{ansible_user_dir}}/.bashrc"
+    regexp: '^\s*alias kinit='
+    line: "alias kinit='kinit {{ rh_nick }}'"
+- name: set kerberos default realm
+  ini_file:
+    path: /etc/krb5.conf
+    section: libdefaults
+    option: default_realm
+    value: "REDHAT.COM"
+    backup: yes
+    create: false
+  become: yes

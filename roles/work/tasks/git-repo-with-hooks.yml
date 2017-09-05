@@ -1,0 +1,27 @@
+---
+- name: checking variable file
+  fail:
+    msg: Please fill in variable file for this role
+  when: not rh_nick
+- name: git clone
+  git:
+    repo: "{{ url }}"
+    dest: "{{ dest_dir }}"
+    update: no
+- name: does hook exist?
+  stat:
+    path: "{{ dest_dir }}/.git/hooks/commit-msg"
+  register: stat_commit_msg
+- name: add change id hook
+  get_url:
+    url: "https://gerrit.ovirt.org/tools/hooks/commit-msg"
+    dest: "{{ dest_dir }}/.git/hooks"
+  when: not stat_commit_msg.stat.exists
+- name: sign off by
+  blockinfile:
+    path: "{{ dest_dir }}/.git/hooks/commit-msg"
+    insertafter: EOF
+    block: |
+      SOB=$(git var GIT_AUTHOR_IDENT | sed -n 's/^\(.*>\).*$/Signed-off-by: \1/p')
+      grep -qs "^$SOB" "$1" || echo "$SOB" >> "$1"
+

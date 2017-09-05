@@ -1,0 +1,44 @@
+---
+- include: install-packages.yml
+- include: java.yml
+- include: gedit.yml
+- include: nodejs.yml
+- include: idea.yml
+- include: vscode.yml
+- include: yarn.yml
+- include: tilix.yml
+- include: vim.yml
+- include: go.yml
+
+- name: git user name
+  git_config: name=user.name scope=global value={{ git.name }}
+- name: git email
+  git_config: name=user.email scope=global value={{ git.email }}
+- name: git core.editor
+  git_config:
+    name: core.editor
+    scope: global
+    value: vim
+
+- name: alias glog
+  lineinfile:
+    path: "{{ansible_user_dir}}/.bashrc"
+    regexp: "^alias glog="
+    line: "alias glog='git log --oneline --decorate --graph --all'"
+- name: alias o
+  lineinfile:
+    path: "{{ansible_user_dir}}/.bashrc"
+    regexp: "^alias o="
+    line: "alias o='xdg-open'"
+- name: bashrc npm completion
+  lineinfile:
+    dest: "{{ansible_env.HOME}}/.bashrc"
+    line: ". <(npm completion)"
+# desktop wallpaper
+# lock screen wallpaper
+# side dock shortcuts
+# gnome-system-monitor - show all processes
+# enable tap to click
+# disable natural scrolling
+# remove shortcuts for move and resize withdow: alt+f7, alt+f8
+# enable docker service

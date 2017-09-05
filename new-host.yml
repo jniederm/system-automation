@@ -1,0 +1,17 @@
+---
+- tasks:
+# change hostname
+# install epel http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+  - name: Install epel
+    yum:
+      name: "http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm"
+      state: present
+    become: true
+  - name: Install dnf
+    yum:
+      name: dnf
+      state: present
+    become: true
+- roles:
+    - basic
+    - ovirt-repos

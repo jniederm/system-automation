@@ -1,0 +1,11 @@
+---
+- name: Install jdk
+  dnf:
+    name: java-1.8.0-openjdk-devel
+    state: present
+  become: yes
+- name: Install maven
+  dnf:
+    name: maven
+    state: present
+  become: yes

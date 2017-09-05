@@ -2,3 +2,4 @@
 private*
 playground/
 .idea/
+/roles/**/vars/**/*.yml

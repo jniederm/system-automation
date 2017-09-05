@@ -5,15 +5,5 @@
     - private-vars.yml
     - vars.yml
   tasks:
-  - dnf:
-      state: present
-      name: meld
-    become: True
-#    async: 300
-#    poll: 0
-  - dnf:
-      state: present
-      name: tilix
-    become: True
-#    async: 300
-#    poll: 0
+    - debug:
+        var: ansible_user_dir

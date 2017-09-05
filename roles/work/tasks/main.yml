@@ -1,0 +1,87 @@
+---
+- include: kerberos.yml
+- name: rhevm-branding-rhev repo
+  include: git-repo-with-hooks.yml url="ssh://{{rh_nick}}@code.engineering.redhat.com:22/rhevm-branding-rhev" dest_dir="{{ ansible_env.HOME }}/src/rhevm-branding-rhev"
+- include: engine-dev.yml
+- include: web-ui-dev.yml
+- name: install virt manager
+  dnf: name=virt-manager state=present
+  become: yes
+- name: install pgadmin3
+  dnf: name=pgadmin3 state=present
+  become: yes
+- name: install postgresql
+  dnf: name=postgresql state=present
+  become: yes
+- dnf: name=postgresql-server state=present
+  become: yes
+- name: Install virt viewer
+  dnf: name=virt-viewer state=present
+  become: yes
+- name: Install ovirt repositories
+  dnf:
+    name: http://resources.ovirt.org/pub/yum-repo/ovirt-release-master.rpm
+    state: present
+  become: yes
+- name: Install ovirt wildfly
+  dnf:
+    name: ovirt-engine-wildfly
+    state: present
+  become: yes
+- name: Install libvirt-client
+  dnf:
+    name: libvirt-client
+    state: present
+  become: yes
+# commented since in conflicts with kubernetes packages that provides kubectl
+# - name: install openshift client
+#   dnf:
+#     name: origin-client
+#     state: installed
+#   become: yes
+
+- name: Hostname happybox
+  hostname:
+    name: happybox
+  become: true
+
+# required for probably "lineinfile"
+- name: Install libselinux-python
+  dnf: name=libselinux-python state=present
+  become: yes
+
+- name: Enable nested kvm virtualization
+  lineinfile:
+    path: /etc/modprobe.d/kvm.conf
+    line: options kvm_intel nested=1
+  become: yes
+
+  # Bash aliases
+- name: alias ovirt-incremental-compile-engine
+  lineinfile:
+    path: "{{ansible_user_dir}}/.bashrc"
+    regexp: '^\s*alias ovirt-incremental-compile-engine='
+    line: "alias ovirt-incremental-compile-engine='time make install-dev PREFIX=~/target BUILD_UT=0 BUILD_GWT_USERPORTAL=0 BUILD_GWT_WEBADMIN=1 DEV_EXTRA_BUILD_FLAGS_GWT_DEFAULTS=-Dgwt.userAgent=gecko1_8 DEV_BUILD_GWT_DRAFT=1 EXTRA_BUILD_FLAGS=\"-pl org.ovirt.engine.core:common,org.ovirt.engine.core:bll,org.ovirt.engine.core:vdsbroker,org.ovirt.engine.core:utils,org.ovirt.engine:engine-server-ear\" DEV_EXTRA_BUILD_FLAGS=\"-Dcheckstyle.skip=true\"'"
+- name: alias ovirt-debug-webadmin
+  lineinfile:
+    path: "{{ansible_user_dir}}/.bashrc"
+    regexp: '^\s*alias ovirt-debug-webadmin='
+    line: "alias ovirt-debug-webadmin='make gwt-debug DEBUG_MODULE=webadmin'"
+- name: alias ovirt-configure-engine
+  lineinfile:
+    path: "{{ansible_user_dir}}/.bashrc"
+    regexp: '^\s*alias ovirt-configure-engine='
+    line: "alias ovirt-configure-engine='~/target/bin/engine-setup'"
+- name: alias no-checkstyle
+  lineinfile:
+    path: "{{ansible_user_dir}}/.bashrc"
+    regexp: '^\s*alias no-checkstyle='
+    line: "alias no-checkstyle='DEV_EXTRA_BUILD_FLAGS=\"-Dcheckstyle.skip=true\"'"
+
+# git clone git@github.com:jniederm/ovirt-aux-scripts.git
+# hexchat .config/hexchat/servlist.conf
+# autorun hexchat
+# hexchat enable sound beeps and desktop notifications
+# vpn
+# install postman
+# .vimrc au FileType gitcommit setlocal tw=72 ; colorcolumn= ; enable spellchecking; enable colors,   

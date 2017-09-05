@@ -1,0 +1,16 @@
+---
+- name: vim enable syntax
+  lineinfile:
+    path: "{{ ansible_user_dir }}/.vimrc"
+    regexp: '^\s*syntax on'
+    line: 'syntax on'
+- name: vim enable line numbers
+  lineinfile:
+    path: "{{ ansible_user_dir }}/.vimrc"
+    regexp: '^\s*set number'
+    line: 'set number'
+- name: vim enable syntax
+  lineinfile:
+    path: "{{ ansible_user_dir }}/.vimrc"
+    regexp: '^\s*au FileType gitcommit '
+    line: 'au FileType gitcommit setlocal spell tw=72 colorcolumn=73 nonumber'

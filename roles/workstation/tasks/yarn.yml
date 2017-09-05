@@ -1,0 +1,21 @@
+---
+- name: Add yarn repo
+  get_url:
+    url: "https://dl.yarnpkg.com/rpm/yarn.repo"
+    dest: /etc/yum.repos.d/yarn.repo
+  become: true
+- name: Install yarn
+  dnf:
+    name: yarn
+    state: present
+  become: yes
+# doesnt work well with yarn from rpm
+#- name: is yarn tab completion installed?
+#  shell: "cat {{ ansible_user_dir }}/.bashrc | grep /yarn.bash"
+#  register: yarn_in_bashrc_result
+#  ignore_errors: yes
+#  changed_when: no
+#- name: install yarn tab completion
+#  shell: yarn global add yarn-completions
+#  when: yarn_in_bashrc_result.stdout_lines | length == 0
+  

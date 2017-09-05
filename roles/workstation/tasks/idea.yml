@@ -1,0 +1,11 @@
+---
+# https://www.jetbrains.com/idea/download/download-thanks.html?platform=linux
+- name: Idea symlink in bin
+  file:
+    state: link
+    path: "{{ ansible_user_dir }}/bin/idea.sh"
+    src: "{{ ansible_user_dir }}/opt/idea/latest/bin/idea.sh"
+# dracula theme
+# change font size with Ctrl + MouseWheel
+# extend selection Ctrl + T
+# close Ctrl + W

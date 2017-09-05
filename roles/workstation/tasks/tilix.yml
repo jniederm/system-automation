@@ -1,0 +1,13 @@
+---
+- name: Install tilix
+  dnf:
+    name: tilix
+    state: present
+  become: yes
+#/com/gexperts/Tilix/new-window-inherit-state
+#  true
+
+#/com/gexperts/Tilix/control-scroll-zoom
+#  true
+
+# ~/.config/gtk-3.0/gtk.css : .terminal-titlebar:active {background-color: #FC3A0D;}

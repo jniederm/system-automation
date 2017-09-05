@@ -1,0 +1,168 @@
+---
+# Engine development environment
+- name: Install otopi
+  dnf:
+    name: otopi
+    state: present
+  become: yes
+- name: Install python2-psycopg2
+  dnf:
+    name: python2-psycopg2
+    state: present
+  become: yes
+- name: Install ovirt-setup-lib
+  dnf:
+    name: ovirt-setup-lib
+    state: present
+  become: yes
+  # currently not in repo
+  ignore_errors: yes
+- name: Install python-daemon
+  dnf:
+    name: python-daemon
+    state: present
+  become: yes
+- name: Install ovirt-js-dependencies
+  dnf:
+    name: ovirt-js-dependencies
+    state: present
+  become: yes
+  # currently not in repo
+  ignore_errors: yes
+- name: Install ovirt-host-deploy
+  dnf:
+    name: ovirt-host-deploy
+    state: present
+  become: yes
+# for web socket proxy
+- name: Install python2-websockify
+  dnf:
+    name: python2-websockify
+    state: present
+  become: yes
+  # currently not in repo
+  ignore_errors: yes
+- name: Install novnc
+  dnf:
+    name: novnc
+    state: present
+  become: yes
+- name: Increment inotify number
+  lineinfile:
+    path: /etc/sysctl.conf
+    regexp: '^\w*fs.inotify.max_user_watches='
+    line: 'fs.inotify.max_user_watches=524288'
+- name: Create /pub directory
+  file:
+    path: "/pub"
+    state: directory
+    owner: 36
+    group: 36
+    mode: a+rwx
+  become: yes
+- name: Create pub/d1 directory
+  file:
+    path: "/pub/d1"
+    state: directory
+    owner: 36
+    group: 36
+    mode: a+rwx
+  become: yes
+- name: Create pub/d2 directory
+  file:
+    path: "/pub/d2"
+    state: directory
+    owner: 36
+    group: 36
+    mode: a+rwx
+  become: yes
+- name: Create pub/d3 directory
+  file:
+    path: "/pub/d3"
+    state: directory
+    owner: 36
+    group: 36
+    mode: a+rwx
+  become: yes
+- name: Create pub/d41 directory
+  file:
+    path: "/pub/d41"
+    state: directory
+    owner: 36
+    group: 36
+    mode: a+rwx
+  become: yes
+- name: enable nfs-server service
+  systemd:
+    name: nfs-server
+    enabled: yes
+    state: started
+  become: yes
+- name: "publish /pub as nfs shared dir"
+  lineinfile:
+    path: /etc/exports
+    regexp: "^\\s*/pub"
+    line: "/pub *(rw,async,insecure,no_subtree_check)"
+  become: yes
+  register: etc_exports_edit_result
+- name: reload nfs configuration
+  shell: 'exportfs -r'
+  when: etc_exports_edit_result.changed
+  become: yes
+
+# packages python-m2crypto
+# enable postgresql service
+# /usr/bin/postgresql-setup --initdb
+# set acces rights /var/lib/pgsql/data/pg_hba.conf 
+#local   all             postgres                                trust
+#local   all             all                                     md5
+#host    all             all             127.0.0.1/32            md5
+#host    all             all             ::1/128                 md5
+
+#          autovacuum_vacuum_scale_factor = 0.01
+#          autovacuum_analyze_scale_factor = 0.075
+#          autovacuum_max_workers = 6
+#          max_connections = 150
+
+# restart postgresql service
+
+# create user engine password 'a';
+
+
+# alias ovirt-compile-engine='time make clean install-dev PREFIX=~/target BUILD_UT=0 BUILD_GWT_USERPORTAL=0 BUILD_GWT_WEBADMIN=1 DEV_EXTRA_BUILD_FLAGS_GWT_DEFAULTS=-Dgwt.userAgent=gecko1_8 DEV_BUILD_GWT_DRAFT=1'
+# alias ovirt-incremental-compile-engine='time make install-dev PREFIX=~/target BUILD_UT=0 BUILD_GWT_USERPORTAL=0 BUILD_GWT_WEBADMIN=1 DEV_EXTRA_BUILD_FLAGS_GWT_DEFAULTS=-Dgwt.userAgent=gecko1_8 DEV_BUILD_GWT_DRAFT=1 EXTRA_BUILD_FLAGS="-pl org.ovirt.engine.core:common,org.ovirt.engine.core:bll,org.ovirt.engine.core:vdsbroker,org.ovirt.engine.core:utils,org.ovirt.engine:engine-server-ear" DEV_EXTRA_BUILD_FLAGS="-Dcheckstyle.skip=true"'
+# alias ovirt-debug-webadmin='make gwt-debug DEBUG_MODULE=webadmin'
+# alias ovirt-debug-userportal='make gwt-debug DEBUG_MODULE=userportal-gwtp'
+# alias ovirt-configure-engine='~/target/bin/engine-setup'
+# alias ovirt-copy-to-targed='time make install-dev DEV_REBUILD=0 PREFIX=~/target'
+# alias ovirt-cd-engine-src='cd ~/src/ovirt-engine'
+# alias ovirt-push='git push origin HEAD:refs/for/master'
+# alias glog='git log --oneline --decorate --graph --all'
+# alias kinit='kinit jniederm'
+# alias mount-lago='sudo sshfs -o allow_other jakub@192.168.122.130/ ~/mnt'
+# alias guests='sudo virsh -r net-dhcp-leases default'
+
+# unpack firefox 26 from https://ftp.mozilla.org/pub/firefox/releases/26.0/linux-x86_64/en-US/firefox-26.0.tar.bz2 to ~/opt/firefox/26 and link is from ~/bin/firefox26
+# remove firefox 26 updater
+
+
+- name: alias ovirt-compile-engine
+  lineinfile:
+    path: "{{ansible_user_dir}}/.bashrc"
+    regexp: '^\s*alias ovirt-compile-engine='
+    line: "alias ovirt-compile-engine='time make clean install-dev PREFIX=~/target BUILD_UT=0 BUILD_GWT_WEBADMIN=1 DEV_EXTRA_BUILD_FLAGS_GWT_DEFAULTS=-Dgwt.userAgent=gecko1_8 DEV_BUILD_GWT_DRAFT=1 DEV_EXTRA_BUILD_FLAGS=-Dcheckstyle.skip=false'"
+- name: alias ovirt-copy-to-targed
+  lineinfile:
+    path: "{{ ansible_user_dir }}/.bashrc"
+    regexp: '^\s*alias ovirt-copy-to-targed='
+    line: "alias ovirt-copy-to-targed='time make install-dev DEV_REBUILD=0 PREFIX=~/target'"
+- name: alias ovirt-run-engine
+  lineinfile:
+    path: "{{ ansible_user_dir }}/.bashrc"
+    regexp: '^\s*alias ovirt-run-engine='
+    line: "alias ovirt-run-engine='~/target/share/ovirt-engine/services/ovirt-engine/ovirt-engine.py start'"
+- name: alias ovirt-push
+  lineinfile:
+    path: "{{ ansible_user_dir }}/.bashrc"
+    regexp: '^\s*alias ovirt-push='
+    line: "alias ovirt-push='git push origin HEAD:refs/for/master'"
