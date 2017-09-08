@@ -42,3 +42,13 @@
 # disable natural scrolling
 # remove shortcuts for move and resize withdow: alt+f7, alt+f8
 # enable docker service
+- name: Install flatpack
+  dnf:
+    name: flatpack
+  become: yes
+- name: 'Is peek installed?'
+  shell: flatpack list
+  register: flatpack_list_result
+- name: Install peek
+  shell: 'flatpak install --user http://flatpak.uploadedlobster.com/peek-stable.flatpakref'
+  when: flatpack_list_result..stdout | regex_search('^com\\.uploadedlobster\\.peek/') == None
