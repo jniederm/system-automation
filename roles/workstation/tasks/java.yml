@@ -4,6 +4,11 @@
     name: java-1.8.0-openjdk-devel
     state: present
   become: yes
+- name: Install jdk sources
+  dnf:
+    name: java-1.8.0-openjdk-src.x86_64
+    state: present
+  become: yes
 - name: Install maven
   dnf:
     name: maven
