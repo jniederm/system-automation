@@ -47,6 +47,16 @@
     name: novnc
     state: present
   become: yes
+- name: Install ovirt-ansible
+  dnf:
+    name: ovirt-ansible
+    state: present
+  become: yes
+- name: Install python-netaddr
+  dnf:
+    name: python-netaddr
+    state: present
+  become: yes
 - name: Increment inotify number
   lineinfile:
     path: /etc/sysctl.conf
@@ -109,6 +119,17 @@
   shell: 'exportfs -r'
   when: etc_exports_edit_result.changed
   become: yes
+- name: Clone ovirt-ansible repo
+  git:
+    repo: git@github.com:oVirt/ovirt-ansible.git
+    dest: '{{ ansible_user_dir }}/src/ovirt-ansible'
+- name: 'Is ovirt-ansible copied into $TARGET?'
+  stat:
+    path: '{{ ansible_user_dir }}/target/share/ovirt-ansible-roles'
+  register: target_ovirt_ansible_roles_stat_result
+- name: Copy ovirt-ansible-roles-to-target
+  shell: 'make install PREFIX="{{ ansible_user_dir }}/target"'
+  when: not target_ovirt_ansible_roles_stat_result.stat.exists
 
 # packages python-m2crypto
 # enable postgresql service
