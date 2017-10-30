@@ -8,15 +8,14 @@
     path: "{{ ansible_user_dir }}/.bash_profile"
     regexp: '^GOPATH='
     line: 'GOPATH={{ ansible_user_dir}}/go'
-- name: Set GOPATH environment variable
+- name: Export GOPATH environment variable
   lineinfile:
     path: "{{ ansible_user_dir }}/.bash_profile"
-    insertbefore: '^(EXPORT )?PATH='
-    regexp: '^GOPATH='
-    line: 'GOPATH=$HOME/go'
+    regexp: '^\s*export GOPATH'
+    line: 'export GOPATH'
 - name: Add GOPATH/bin to PATH
   lineinfile:
     path: "{{ ansible_user_dir }}/.bash_profile"
-    insertafter: '^(EXPORT )?GOPATH'
+    insertafter: '^(export )?GOPATH'
     regexp: '^PATH=.*\$GOPATH/bin'
     line: 'PATH=$GOPATH/bin:$PATH'
