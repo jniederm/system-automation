@@ -1,0 +1,22 @@
+---
+- name: Does kubevirt repo exist?
+  stat:
+    path: '{{ ansible_user_dir }}/src/kubevirt/.git'
+  register: kubevirt_git_stat_result
+- name: Clone kubevirt repo
+  git:
+    repo: git@github.com:kubevirt/kubevirt.git
+    dest: '{{ ansible_user_dir }}/src/kubevirt'
+  when: not kubevirt_git_stat_result.stat.exists
+- name: Install libvirt-devel
+  dnf:
+    name: libvirt-devel
+  become: yes
+- name: Install vagrant
+  dnf:
+    name: vagrant
+  become: yes
+- name: Install vagrant-libvirt
+  dnf:
+    name: vagrant-libvirt
+  become: yes
