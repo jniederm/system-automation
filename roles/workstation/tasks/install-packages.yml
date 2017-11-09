@@ -54,9 +54,6 @@
 - name: Install terminator
   dnf: name=terminator state=present
   become: yes
-- name: Install tilix
-  dnf: name=tilix state=present
-  become: yes
   ignore_errors: yes
 - name: Install dconf-editor
   dnf:
