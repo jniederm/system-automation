@@ -1,0 +1,7 @@
+# run using: $ ansible-playbook -K ./main.yml
+---
+- hosts: localhost
+  tasks:
+  roles:
+    - basic
+    - workstation
