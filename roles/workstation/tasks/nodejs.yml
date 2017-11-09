@@ -17,6 +17,6 @@
     state: directory
 - name: "Use npm prefix ~/.npm-prefix"
   lineinfile:
-    path: "{{ ansible_user_dir }}"/.npmrc
-    line: "prefix={{ ansible_user_dir }}/.npm-prefix"
-    regexp: "^\s*prefix="
+    path: '{{ ansible_user_dir }}/.npmrc'
+    line: 'prefix={{ ansible_user_dir }}/.npm-prefix'
+    regexp: '^\s*prefix='
