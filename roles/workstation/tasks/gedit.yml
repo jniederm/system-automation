@@ -27,3 +27,7 @@
     # user: "{{ username }}"
     # key: org.gnome.gedit.preferences.editor.wrap-last-split-mode
     # value: "'word'"
+- name: 'Install gedit-plugins'  # to install "Text size" plugin allowing to change font size by Ctrl+mouse_scroll
+  dnf:
+    name: gedit-plugins
+# activate text-size plugin
