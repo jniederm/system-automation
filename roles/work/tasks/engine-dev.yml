@@ -187,7 +187,5 @@
     path: "{{ ansible_user_dir }}/.bashrc"
     regexp: '^\s*alias ovirt-push='
     line: "alias ovirt-push='git push origin HEAD:refs/for/master'"
-- name: Clone ovirt-engine-api-model repo
-  git:
-    repo: 'ssh://jniederm@gerrit.ovirt.org:29418/ovirt-engine-api-model'
-    dest: '{{ ansible_user_dir }}/src/ovirt-engine-api-model'
+- name: Setup ovirt-engine-api-model repo
+  include: git-repo-with-hooks.yml url='ssh://{{rh_nick}}@gerrit.ovirt.org:29418/ovirt-engine-api-model' dest_dir='{{ ansible_env.HOME }}/src/ovirt-engine-api-model'
