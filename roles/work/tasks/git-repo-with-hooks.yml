@@ -8,15 +8,12 @@
     repo: "{{ url }}"
     dest: "{{ dest_dir }}"
     update: no
-- name: does hook exist?
-  stat:
-    path: "{{ dest_dir }}/.git/hooks/commit-msg"
-  register: stat_commit_msg
 - name: add change id hook
   get_url:
-    url: "https://gerrit.ovirt.org/tools/hooks/commit-msg"
-    dest: "{{ dest_dir }}/.git/hooks"
-  when: not stat_commit_msg.stat.exists
+    url: 'https://gerrit.ovirt.org/tools/hooks/commit-msg'
+    dest: '{{ dest_dir }}/.git/hooks'
+    force: no
+    mode: 'u=rwx,g=r,o=r'
 - name: sign off by
   blockinfile:
     path: "{{ dest_dir }}/.git/hooks/commit-msg"
