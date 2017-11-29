@@ -20,3 +20,8 @@
     path: '{{ ansible_user_dir }}/.npmrc'
     line: 'prefix={{ ansible_user_dir }}/.npm-prefix'
     regexp: '^\s*prefix='
+- name: "Add ~/.npm-prefix/bin to PATH"
+  lineinfile:
+    path: '{{ ansible_user_dir }}/.bash_profile'
+    regexp: '(^| )PATH=.*/\.npm-prefix/bin'
+    line: 'export PATH=$PATH:$HOME/.npm-prefix/bin'
