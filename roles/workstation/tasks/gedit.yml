@@ -19,8 +19,10 @@
   command: dconf write /org/gnome/gedit/preferences/editor/insert-spaces true
 - name: auto indent
   command: dconf write /org/gnome/gedit/preferences/editor/auto-indent true
-- name: color scheme
-  command: dconf write /org/gnome/gedit/preferences/editor/scheme "'oblivion'"
+- name: Gedit color scheme
+  dconf:
+    key: '/org/gnome/gedit/preferences/editor/scheme'
+    value: "'oblivion'"
 # failing
 # - name: gedit do not split words over lines
   # gsetting:
@@ -30,4 +32,14 @@
 - name: 'Install gedit-plugins'  # to install "Text size" plugin allowing to change font size by Ctrl+mouse_scroll
   dnf:
     name: gedit-plugins
-# activate text-size plugin
+- name: Get gedit active plugins
+  dconf:
+    key: '/org/gnome/gedit/plugins/active-plugins'
+    state: read
+  register: gedit_active_plugins_result
+- name: Activate gedit textsize plugin
+  dconf:
+    key: '/org/gnome/gedit/plugins/active-plugins'
+    state: present
+    value: '{{ (gedit_active_plugins_result.value | from_yaml) + [ "textsize" ] }}'
+  when: '"textsize" not in (gedit_active_plugins_result.value | from_yaml)'
