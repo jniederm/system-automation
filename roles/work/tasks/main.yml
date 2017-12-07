@@ -4,6 +4,8 @@
   include: git-repo-with-hooks.yml url="ssh://{{rh_nick}}@code.engineering.redhat.com:22/rhevm-branding-rhev" dest_dir="{{ ansible_env.HOME }}/src/rhevm-branding-rhev"
 - include: engine-dev.yml
 - include: web-ui-dev.yml
+- include: kubevirt.yml
+
 - name: install virt manager
   dnf: name=virt-manager state=present
   become: yes
