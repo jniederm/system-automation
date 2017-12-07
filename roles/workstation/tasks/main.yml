@@ -51,4 +51,15 @@
   register: flatpack_list_result
 - name: Install peek
   shell: 'flatpak install --user http://flatpak.uploadedlobster.com/peek-stable.flatpakref'
-  when: flatpack_list_result..stdout | regex_search('^com\\.uploadedlobster\\.peek/') == None
+  when: flatpack_list_result.stdout | regex_search('^com\\.uploadedlobster\\.peek/') == None
+- name: Install jq
+  dnf:
+    name: jq
+  become: yes
+- name: Is jid installed
+  command: 'which jid'
+  register: which_jid_result
+  changed_when: no
+- name: 'Install jid' # JSON interactive digger
+  command: 'go get -u github.com/simeji/jid/cmd/jid'
+  when: which_jid_result.rc != 0
