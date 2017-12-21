@@ -1,0 +1,19 @@
+---
+# disable hp accelerometer https://askubuntu.com/questions/585706/deactivate-accelerometer
+- name: list kernel modules
+  command: lsmod
+  register: lsmod_reg
+  changed_when: False
+- name: disable hp accelerometer
+  when: 'not lsmod_reg | regex("hp_accel.+")'
+#    when: 'not (lsmod_reg | search("a"))'
+  block:
+    - name: disable hp accelerometer permanently
+      lineinfile:
+        # file name doesn't matter
+        path: /etc/modprobe.d/blacklist-hp-accel.conf
+        line: 'blacklist hp_accel'
+      become: True
+    - name: disable hp accelerometer permanently at runtime
+      become: True
+      command: rmmod hp_accel
