@@ -2,9 +2,47 @@
 - name: "does node.js dir exist?"
   stat:
     path: "{{ ansible_user_dir }}/opt/nodejs/latest"
-  register: nodejs_dir_stat
-#- block:
-# download https://nodejs.org/dist/latest/SHASUMS256.txt, grep the file name, 
+  register: nodejs_dir_stat_result
+- block:
+  - name: 'Create tmp file for node.js list'
+    tempfile:
+    register: nodejs_list_tmp_file_result
+  - name: 'Download node.js file list'
+    get_url:
+      url: 'https://nodejs.org/dist/latest/SHASUMS256.txt'
+      dest: '{{ nodejs_list_tmp_file_result.path }}'
+      force: yes
+  - name: 'Create tmp dir for node.js archive'
+    tempfile:
+      state: directory
+    register: nodejs_archive_tmp_dir_result
+  - name: 'Set node.js archive name'
+    set_fact:
+      nodejs_archive_name: "{{ lookup('file', nodejs_list_tmp_file_result.path) | regex_findall('((.*)\n?)') | map(attribute=1) | list | map('regex_search', 'node-v\\d+\\.\\d+\\.\\d+-linux-x64\\.tar\\.gz') | list | select('string') | first }}" # expected result: 'node-v9.3.0-linux-x64.tar.gz'
+  - name: 'Download node.js'
+    get_url:
+      url: 'https://nodejs.org/dist/latest/{{ nodejs_archive_name }}'
+      dest: '{{ nodejs_archive_tmp_dir_result.path }}'
+  - name: 'Create nodejs dir'
+    file:
+      path: '{{ ansible_user_dir }}/opt/nodejs'
+      state: directory
+  - name: 'Extract downloaded node.js'
+    unarchive:
+      src: '{{ nodejs_archive_tmp_dir_result.path }}/{{ nodejs_archive_name }}'
+      dest: '{{ ansible_user_dir }}/opt/nodejs'
+      remote_src: yes
+      list_files: yes
+    register: extract_nodejs_result
+  - name: 'get node.js extracted directory name'
+    set_fact:
+      nodejs_directory_name: "{{ extract_nodejs_result.files | first | regex_findall('([^/]+)(/\\.*)?') | first | first }}" # expected result: 'node-v9.3.0-linux-x64'
+  - name: 'Create latest link'
+    file:
+      path: '{{ ansible_user_dir }}/opt/nodejs/latest'
+      state: link
+      src: './{{ nodejs_directory_name }}'
+  when: not nodejs_dir_stat_result.stat.exists
 - name: "node.js in PATH"
   lineinfile:
     path: "{{ ansible_user_dir }}/.bash_profile"
