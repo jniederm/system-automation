@@ -1,15 +1,15 @@
 ---
-- include: install-packages.yml
-- include: java.yml
-- include: gedit.yml
-- include: nodejs.yml
-- include: idea.yml
-- include: vscode.yml
-- include: yarn.yml
-- include: tilix.yml
-- include: vim.yml
-- include: go.yml
-- include: gnome.yml
+- import_tasks: install-packages.yml
+- import_tasks: java.yml
+- import_tasks: gedit.yml
+- import_tasks: nodejs.yml
+- import_tasks: idea.yml
+- import_tasks: vscode.yml
+- import_tasks: yarn.yml
+- import_tasks: tilix.yml
+- import_tasks: vim.yml
+- import_tasks: go.yml
+- import_tasks: gnome.yml
 
 - name: git user name
   git_config: name=user.name scope=global value={{ git.name }}

@@ -1,10 +1,10 @@
 ---
-- include: kerberos.yml
+- import_tasks: kerberos.yml
 - name: rhevm-branding-rhev repo
-  include: git-repo-with-hooks.yml url="ssh://{{rh_nick}}@code.engineering.redhat.com:22/rhevm-branding-rhev" dest_dir="{{ ansible_env.HOME }}/src/rhevm-branding-rhev"
-- include: engine-dev.yml
-- include: web-ui-dev.yml
-- include: kubevirt.yml
+  import_tasks: git-repo-with-hooks.yml url="ssh://{{rh_nick}}@code.engineering.redhat.com:22/rhevm-branding-rhev" dest_dir="{{ ansible_env.HOME }}/src/rhevm-branding-rhev"
+- import_tasks: engine-dev.yml
+- import_tasks: web-ui-dev.yml
+- import_tasks: kubevirt.yml
 
 - name: install virt manager
   dnf: name=virt-manager state=present
