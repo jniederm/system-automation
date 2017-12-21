@@ -16,3 +16,12 @@
     name: code
     state: present
   become: yes
+- name: 'Update VS Code settings'
+  copy:
+    dest: '{{ ansible_user_dir }}/.config/Code/User/settings.json'
+    content: |
+      {{ lookup('file', ansible_user_dir + '/.config/Code/User/settings.json') | regex_findall('.*') | select('regex', '^\s*[^/]') | list | join | from_json | combine({
+        "files.autoSave": "onFocusChange",
+        "window.zoomLevel": 0,
+        "javascript.validate.enable": False,
+      }, recursive=True) | to_nice_json(indent=4) }}
