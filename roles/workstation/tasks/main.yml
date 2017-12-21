@@ -9,6 +9,7 @@
 - include: tilix.yml
 - include: vim.yml
 - include: go.yml
+- include: gnome.yml
 
 - name: git user name
   git_config: name=user.name scope=global value={{ git.name }}

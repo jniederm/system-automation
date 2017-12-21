@@ -1,0 +1,12 @@
+- name: 'Gnome: Seconds in top bar'
+  dconf:
+    key: '/org/gnome/desktop/interface/clock-show-seconds'
+    value: 'true'
+- name: 'Gnome: Date in top bar'
+  dconf:
+    key: '/org/gnome/desktop/interface/clock-show-date'
+    value: 'true'
+- name: 'Gnome: Show week numbers in top bar calendar'
+  dconf:
+    key: '/org/gnome/desktop/calendar/show-weekdate'
+    value: 'true'
