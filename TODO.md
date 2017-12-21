@@ -5,7 +5,6 @@
 * hexchat channels
 * idea
 * ui settings
-* gsettings modules
 * visual studio settings /home/jakub/.config/Code/User/settings.json
 
     {
