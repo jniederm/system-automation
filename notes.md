@@ -19,3 +19,15 @@ https://stackoverflow.com/questions/38795908/how-to-select-regex-matches-in-jinj
 ```
 ... | map('regex_search',my_pattern) | ...
 ```
+
+## print predefined variabled (facts)
+
+```
+ansible localhost -m setup -c localhost
+```
+
+## ad-hoc module invocation
+
+```
+ansible localhost -m debug -c local -a "msg='{{ {'a': 'b'} | combine({'q': 'w'}) }}'"
+```
