@@ -46,7 +46,7 @@
 - name: "node.js in PATH"
   lineinfile:
     path: "{{ ansible_user_dir }}/.bash_profile"
-    regexp: '^\w*PATH=\W*\$HOME/opt/nodejs/latest/bin'
+    regexp: '(^| )PATH=\W*\$HOME/opt/nodejs/latest/bin'
     line: 'PATH=$HOME/opt/nodejs/latest/bin:$PATH'
     insertbefore: '^\w*export PATH$'
 - name: "create ~/.npm-prefix"
