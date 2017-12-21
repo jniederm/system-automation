@@ -62,4 +62,4 @@
   lineinfile:
     path: '{{ ansible_user_dir }}/.bash_profile'
     regexp: '(^| )PATH=.*/\.npm-prefix/bin'
-    line: 'export PATH=$PATH:$HOME/.npm-prefix/bin'
+    line: 'export PATH=$HOME/.npm-prefix/bin:$PATH'
