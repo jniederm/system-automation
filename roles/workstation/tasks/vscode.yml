@@ -67,3 +67,11 @@
         | union( vs_code_keybindings | from_json )
         | to_nice_json
       }}
+- name: 'Install VS Code Flow extension'
+  command: 'code --install-extension flowtype.flow-for-vscode'
+  changed_when: "not last_result.stdout | search('already installed')"
+  register: last_result
+- name: 'Install VS Code Git Lens extension'
+  command: 'code --install-extension eamodio.gitlens'
+  changed_when: "not last_result.stdout | search('already installed')"
+  register: last_result
