@@ -22,6 +22,7 @@
       {
         "files.autoSave": "onFocusChange",
         "window.zoomLevel": 0,
+        "editor.mouseWheelZoom": true,
         "javascript.validate.enable": false
       }
 - name: 'Update VS Code settings'
