@@ -25,3 +25,32 @@
         "window.zoomLevel": 0,
         "javascript.validate.enable": False,
       }, recursive=True) | to_nice_json(indent=4) }}
+- name: 'Set VS Code keybindings fact'
+  set_fact:
+    vs_code_keybindings: |
+      [
+        {
+            "key": "ctrl+d",
+            "command": "editor.action.copyLinesDownAction",
+            "when": "editorTextFocus && !editorReadonly"
+        },
+        {
+            "key": "ctrl+shift+alt+down",
+            "command": "-editor.action.copyLinesDownAction",
+            "when": "editorTextFocus && !editorReadonly"
+        }
+      ]
+- name: 'Update VS Code keybindings'
+  copy:
+    dest: '{{ ansible_user_dir }}/.config/Code/User/keybindings.json'
+    content: >
+      {{
+        lookup('file', ansible_user_dir + '/.config/Code/User/keybindings.json')
+        | regex_findall('.*')
+        | select('regex', '^\s*[^/]')
+        | list
+        | join
+        | from_json
+        | union( vs_code_keybindings | from_json )
+        | to_nice_json
+      }}
