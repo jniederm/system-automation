@@ -16,15 +16,28 @@
     name: code
     state: present
   become: yes
+- name: 'Set VS Code settings fact'
+  set_fact:
+    vs_code_settings: |
+      {
+        "files.autoSave": "onFocusChange",
+        "window.zoomLevel": 0,
+        "javascript.validate.enable": false
+      }
 - name: 'Update VS Code settings'
   copy:
     dest: '{{ ansible_user_dir }}/.config/Code/User/settings.json'
     content: |
-      {{ lookup('file', ansible_user_dir + '/.config/Code/User/settings.json') | regex_findall('.*') | select('regex', '^\s*[^/]') | list | join | from_json | combine({
-        "files.autoSave": "onFocusChange",
-        "window.zoomLevel": 0,
-        "javascript.validate.enable": False,
-      }, recursive=True) | to_nice_json(indent=4) }}
+      {{
+        lookup('file', ansible_user_dir + '/.config/Code/User/settings.json')
+        | regex_findall('.*')
+        | select('regex', '^\s*[^/]')
+        | list
+        | join
+        | from_json
+        | combine(vs_code_settings | from_json , recursive=True)
+        | to_nice_json
+      }}
 - name: 'Set VS Code keybindings fact'
   set_fact:
     vs_code_keybindings: |
