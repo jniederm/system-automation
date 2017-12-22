@@ -1,5 +1,37 @@
 ---
-# https://www.jetbrains.com/idea/download/download-thanks.html?platform=linux
+- name: 'Does idea dir exist?'
+  state:
+    path: '{{ ansible_user_dir }}/opt/idea/latest'
+  register: idea_dir_stat_result
+- block:
+    - name: 'Create idea download tmp dir'
+      tempfile:
+        state: dir
+      register: idea_download_dir_result
+    - name: 'Download idea'
+      get_url:
+        url: 'https://download.jetbrains.com/idea/ideaIU-2017.3.1.tar.gz'
+        dest: '{{ idea_dir_stat_result.path }}'
+    - name: 'Create idea dir'
+      file:
+        state: directory
+        path: '{{ ansible_user_dir }}/opt/idea'
+    - name: 'Extract idea'
+      unarchive:
+        src: '{{ idea_download_dir_result.path }}/ideaIU-2017.3.1.tar.gz'
+        dest: '{{ ansible_user_dir }}/opt/idea'
+        remote_src: yes
+        list_files: yes
+      register: extract_idea_result
+    - name: 'Get extracted idea directory name'
+      set_fact:
+        idea_dir_name: "{{ extract_idea_result.files | first | regex_findall('^(.+)/') | first }}"
+    - name: 'Create idea link'
+      file:
+        state: link
+        path: '{{ ansible_user_dir }}/idea/latest'
+        src: './{{ idea_dir_name }}'
+  when: 'not idea_dir_stat_result.stat.exists'
 - name: Idea symlink in bin
   file:
     state: link
