@@ -189,3 +189,9 @@
     line: "alias ovirt-push='git push origin HEAD:refs/for/master'"
 - name: Setup ovirt-engine-api-model repo
   include: git-repo-with-hooks.yml url='ssh://{{rh_nick}}@gerrit.ovirt.org:29418/ovirt-engine-api-model' dest_dir='{{ ansible_env.HOME }}/src/ovirt-engine-api-model'
+- name: Postgres set work_mem config value
+  lineinfile:
+    path: '/var/lib/pgsql/data/postgresql.conf'
+    regexp: '^work_mem *='
+    line: 'work_mem=8192'
+  become: yes
