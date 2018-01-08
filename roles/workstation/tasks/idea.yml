@@ -1,6 +1,6 @@
 ---
 - name: 'Does idea dir exist?'
-  state:
+  stat:
     path: '{{ ansible_user_dir }}/opt/idea/latest'
   register: idea_dir_stat_result
 - block:
