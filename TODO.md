@@ -7,3 +7,4 @@
 * idea https://www.jetbrains.com/idea/download/download-thanks.html?platform=linux
 * java 9
 
+postman https://app.getpostman.com/app/download/linux64
