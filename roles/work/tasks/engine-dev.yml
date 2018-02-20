@@ -47,11 +47,11 @@
     name: novnc
     state: present
   become: yes
-- name: Install ovirt-ansible
-  dnf:
-    name: ovirt-ansible
-    state: present
-  become: yes
+#- name: Install ovirt-ansible
+#  dnf:
+#    name: ovirt-ansible
+#    state: present
+#  become: yes
 - name: Install python-netaddr
   dnf:
     name: python-netaddr
@@ -62,6 +62,7 @@
     path: /etc/sysctl.conf
     regexp: '^\w*fs.inotify.max_user_watches='
     line: 'fs.inotify.max_user_watches=524288'
+  become: yes
 - name: Create /pub directory
   file:
     path: "/pub"
@@ -119,17 +120,17 @@
   shell: 'exportfs -r'
   when: etc_exports_edit_result.changed
   become: yes
-- name: Clone ovirt-ansible repo
-  git:
-    repo: git@github.com:oVirt/ovirt-ansible.git
-    dest: '{{ ansible_user_dir }}/src/ovirt-ansible'
+#- name: Clone ovirt-ansible repo
+#  git:
+#    repo: git@github.com:oVirt/ovirt-ansible.git
+#    dest: '{{ ansible_user_dir }}/src/ovirt-ansible'
 - name: 'Is ovirt-ansible copied into $TARGET?'
   stat:
     path: '{{ ansible_user_dir }}/target/share/ovirt-ansible-roles'
   register: target_ovirt_ansible_roles_stat_result
-- name: Copy ovirt-ansible-roles-to-target
-  shell: 'make install PREFIX="{{ ansible_user_dir }}/target"'
-  when: not target_ovirt_ansible_roles_stat_result.stat.exists
+#- name: Copy ovirt-ansible-roles-to-target
+#  shell: 'make install PREFIX="{{ ansible_user_dir }}/target"'
+#  when: not target_ovirt_ansible_roles_stat_result.stat.exists
 
 # packages python-m2crypto
 # enable postgresql service
@@ -188,10 +189,44 @@
     regexp: '^\s*alias ovirt-push='
     line: "alias ovirt-push='git push origin HEAD:refs/for/master'"
 - name: Setup ovirt-engine-api-model repo
-  include: git-repo-with-hooks.yml url='ssh://{{rh_nick}}@gerrit.ovirt.org:29418/ovirt-engine-api-model' dest_dir='{{ ansible_env.HOME }}/src/ovirt-engine-api-model'
+  include_tasks: git-repo-with-hooks.yml url='ssh://{{rh_nick}}@gerrit.ovirt.org:29418/ovirt-engine-api-model' dest_dir='{{ ansible_env.HOME }}/src/ovirt-engine-api-model'
+- name: Setup ovirt-engine repo
+  include_tasks: git-repo-with-hooks.yml url='ssh://{{  rh_nick }}@gerrit.ovirt.org:29418/ovirt-engine' dest_dir='{{ ansible_env.HOME }}/src/ovirt-engine'
+- name: Setup engine repo git commit template
+  git_config:
+    name: commit.template
+    scope: local
+    repo: '{{ ansible_env.HOME }}/src/ovirt-engine'
+    value: 'config/engine-commit-template.txt'
+- name: Install postgresql-server
+  dnf:
+    name: postgresql-server
+  become: yes
+- name: 'Is postgres initilized?'
+  stat:
+    path: '/var/lib/pgsql/data'
+  become: yes
+  register: postgres_data_stat_result
+- name: 'Postgres initialized'
+  command: 'postgresql-setup --initdb'
+  become: yes
+  when: 'not postgres_data_stat_result.stat.exists'
 - name: Postgres set work_mem config value
   lineinfile:
     path: '/var/lib/pgsql/data/postgresql.conf'
     regexp: '^work_mem *='
     line: 'work_mem=8192'
+  become: yes
+# enable and start postgres
+- name: Install postgresql-contrib # it contains uuid-ossp extension
+  dnf:
+    name: postgresql-contrib
+  become: yes
+- name: Install pyton m2crypto extensions
+  dnf:
+    name: python-m2ext
+  become: yes
+- name: Install ovirt-engine-wildfly
+  dnf:
+    name: ovirt-engine-wildfly
   become: yes
