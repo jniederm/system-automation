@@ -10,6 +10,7 @@
 - import_tasks: vim.yml
 - import_tasks: go.yml
 - import_tasks: gnome.yml
+#- import_tasks: firefox.yml
 
 - name: git user name
   git_config: name=user.name scope=global value={{ git.name }}
@@ -43,16 +44,16 @@
 # disable natural scrolling
 # remove shortcuts for move and resize withdow: alt+f7, alt+f8
 # enable docker service
-- name: Install flatpack
+- name: Install flatpak
   dnf:
-    name: flatpack
+    name: flatpak
   become: yes
 - name: 'Is peek installed?'
-  shell: flatpack list
-  register: flatpack_list_result
+  shell: flatpak list
+  register: flatpak_list_result
 - name: Install peek
-  shell: 'flatpak install --user http://flatpak.uploadedlobster.com/peek-stable.flatpakref'
-  when: flatpack_list_result.stdout | regex_search('^com\\.uploadedlobster\\.peek/') == None
+  shell: 'flatpak install -y --user https://flathub.org/repo/appstream/com.uploadedlobster.peek.flatpakref'
+  when: flatpak_list_result.stdout | regex_search('^com\\.uploadedlobster\\.peek/') == None
 - name: Install jq
   dnf:
     name: jq
@@ -60,7 +61,13 @@
 - name: Is jid installed
   command: 'which jid'
   register: which_jid_result
+  failed_when: 'not which_jid_result.rc in (0, 1)'
   changed_when: no
-- name: 'Install jid' # JSON interactive digger
-  command: 'go get -u github.com/simeji/jid/cmd/jid'
+- block:
+  - name: 'Install golang-bin'
+    dnf:
+      name: 'golang-bin'
+    become: yes
+  - name: 'Install jid' # JSON interactive digger
+    command: 'go get -u github.com/simeji/jid/cmd/jid'
   when: which_jid_result.rc != 0

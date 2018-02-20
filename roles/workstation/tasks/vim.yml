@@ -1,4 +1,9 @@
 ---
+- name: '.vimrc exists'
+  copy:
+    dest: '{{ ansible_user_dir }}/.vimrc'
+    force: no
+    content: ''
 - name: vim enable syntax
   lineinfile:
     path: "{{ ansible_user_dir }}/.vimrc"
@@ -9,7 +14,7 @@
     path: "{{ ansible_user_dir }}/.vimrc"
     regexp: '^\s*set number'
     line: 'set number'
-- name: vim enable syntax
+- name: vim gitcommit settings
   lineinfile:
     path: "{{ ansible_user_dir }}/.vimrc"
     regexp: '^\s*au FileType gitcommit '

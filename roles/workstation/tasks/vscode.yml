@@ -11,11 +11,25 @@
     gpgkey: https://packages.microsoft.com/keys/microsoft.asc
     description: "Visual Studio Code" # 'name' field inside the file
   become: yes
+- name: Update dnf repo cache
+  command: dnf check-update
+  register: dnf_check_update_result
+  failed_when: 'not dnf_check_update_result.rc in (0, 100)'
+  become: yes
 - name: Install Visual Studio Code
   dnf:
     name: code
     state: present
   become: yes
+- name: Create VS Code config dir
+  file:
+    path: '{{ ansible_user_dir }}/.config/Code/User'
+    state: 'directory'
+- name: Create default VS Code config
+  copy:
+    force: no
+    dest: '{{ ansible_user_dir }}/.config/Code/User/settings.json'
+    content: '{}'
 - name: 'Set VS Code settings fact'
   set_fact:
     vs_code_settings: |
@@ -39,6 +53,11 @@
         | combine(vs_code_settings | from_json , recursive=True)
         | to_nice_json
       }}
+- name: Create default VS Code keybindings confg
+  copy:
+    force: no
+    dest: '{{ ansible_user_dir }}/.config/Code/User/keybindings.json'
+    content: '[]'
 - name: 'Set VS Code keybindings fact'
   set_fact:
     vs_code_keybindings: |

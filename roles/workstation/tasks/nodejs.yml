@@ -53,11 +53,12 @@
   file:
     path: "{{ ansible_user_dir }}/.npm-prefix"
     state: directory
+- name: 'Is .npm-prefix prefix used?'
+  command: npm config get prefix
+  register: npm_get_prefix_result
 - name: "Use npm prefix ~/.npm-prefix"
-  lineinfile:
-    path: '{{ ansible_user_dir }}/.npmrc'
-    line: 'prefix={{ ansible_user_dir }}/.npm-prefix'
-    regexp: '^\s*prefix='
+  command: "npm config set prefix {{ ansible_user_dir }}/.npm-prefix"
+  when: "npm_get_prefix_result.stdout.find(ansible_user_dir + '/.npm-prefix') == -1"
 - name: "Add ~/.npm-prefix/bin to PATH"
   lineinfile:
     path: '{{ ansible_user_dir }}/.bash_profile'

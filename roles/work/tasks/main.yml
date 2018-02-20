@@ -1,7 +1,10 @@
 ---
 - import_tasks: kerberos.yml
 - name: rhevm-branding-rhev repo
-  import_tasks: git-repo-with-hooks.yml url="ssh://{{rh_nick}}@code.engineering.redhat.com:22/rhevm-branding-rhev" dest_dir="{{ ansible_env.HOME }}/src/rhevm-branding-rhev"
+  include_tasks: git-repo-with-hooks.yml
+  vars:
+    url: "ssh://{{rh_nick}}@code.engineering.redhat.com:22/rhevm-branding-rhev"
+    dest_dir: "{{ ansible_env.HOME }}/src/rhevm-branding-rhev"
 - import_tasks: engine-dev.yml
 - import_tasks: web-ui-dev.yml
 - import_tasks: kubevirt.yml
@@ -25,11 +28,13 @@
     name: http://resources.ovirt.org/pub/yum-repo/ovirt-release-master.rpm
     state: present
   become: yes
+# it wasn't available
 - name: Install ovirt wildfly
   dnf:
     name: ovirt-engine-wildfly
     state: present
   become: yes
+  when: false
 - name: Install libvirt-client
   dnf:
     name: libvirt-client

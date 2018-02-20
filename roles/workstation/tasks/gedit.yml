@@ -32,6 +32,7 @@
 - name: 'Install gedit-plugins'  # to install "Text size" plugin allowing to change font size by Ctrl+mouse_scroll
   dnf:
     name: gedit-plugins
+  become: yes
 - name: Get gedit active plugins
   dconf:
     key: '/org/gnome/gedit/plugins/active-plugins'

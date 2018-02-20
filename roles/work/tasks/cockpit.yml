@@ -1,0 +1,10 @@
+---
+- name: Install python3-libvirt
+  dnf:
+    name: python3-libvirt
+  become: yes
+- name: checkout cockpit repo
+  git:
+    repo: 'git@github.com:cockpit-project/cockpit.git'
+    dest: '{{ ansible_user_dir }}/src/cockpit'
+    update: no

@@ -163,13 +163,13 @@
 #    - name: Rename directory of firefox nightly
 #      command: "mv {{ansible_user_dir}}/opt/firefox/firefox {{ansible_user_dir}}/opt/firefox/latest"
 #  when: not opt_firefox_latest_stat.stat.isdir
-#- name: Create firefox nightly executable
-#  copy:
-#    content: |
-#      #!/bin/sh
-#      {{ansible_user_dir}}/opt/firefox/latest/firefox.sh
-#    dest: "{{ansible_user_dir}}/bin/nightly"
-#    mode: u+rwx
+- name: Create firefox nightly executable
+  copy:
+    content: |
+      #!/bin/sh
+      {{ansible_user_dir}}/opt/firefox/nightly/latest/firefox.sh
+    dest: "{{ansible_user_dir}}/bin/nightly"
+    mode: u+rwx
 #- name: Install node.js
 - name: bashrc npm completion
   lineinfile:
