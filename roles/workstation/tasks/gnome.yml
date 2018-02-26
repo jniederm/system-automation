@@ -10,34 +10,67 @@
   dconf:
     key: '/org/gnome/desktop/calendar/show-weekdate'
     value: 'true'
-# /org/gtk/settings/file-chooser/sort-directories-first
-# true
-
-# /org/gnome/nautilus/preferences/use-experimental-views
-#   true
-
-# /org/gnome/nautilus/preferences/executable-text-activation
-#   'ask'
-
-# /org/gnome/nautilus/list-view/default-visible-columns
-#   ['name', 'size', 'permissions', 'date_modified']
-
-# /org/gnome/nautilus/list-view/default-column-order
-#   ['name', 'size', 'type', 'owner', 'group', 'permissions', 'mime_type', 'where', 'date_modified', 'date_modified_with_time', 'date_accessed', 'recency']
-
-# /org/gnome/nautilus/preferences/default-folder-viewer
-#   'list-view'
-
-# /org/gnome/nautilus/list-view/default-zoom-level
-#   'small'
-
-# /org/gnome/shell/favorite-apps
-#   ['firefox.desktop', 'rhythmbox.desktop', 'shotwell.desktop', 'org.gnome.Nautilus.desktop', 'com.gexperts.Tilix.desktop']
-
-# /org/gnome/desktop/wm/keybindings/begin-move
-  # @as []
-
-  # /org/gnome/desktop/wm/preferences/button-layout
-  # 'appmenu:minimize,close'
-
-
+- name: 'Gnome: directories first in Nautilus'
+  dconf:
+    key: '/org/gtk/settings/file-chooser/sort-directories-first'
+    value: 'true'
+- name: 'Gnome: Use Nautilus experimental views'
+  dconf:
+    key: '/org/gnome/nautilus/preferences/use-experimental-views'
+    value: 'true'
+- name: 'Gnome: Nautilus ask for executable action'
+  dconf:
+    key: '/org/gnome/nautilus/preferences/executable-text-activation'
+    value: 'true'
+- name: 'Gnome: Nautilus columns'
+  dconf:
+    key: '/org/gnome/nautilus/list-view/default-visible-columns'
+    value: "['name', 'size', 'permissions', 'date_modified']"
+- name: 'Gnome: Nautilus column order'
+  dconf:
+    key: '/org/gnome/nautilus/list-view/default-column-order'
+    value: "['name', 'size', 'type', 'owner', 'group', 'permissions', 'mime_type', 'where', 'date_modified', 'date_modified_with_time', 'date_accessed', 'recency']"
+- name: 'Gnome: Nautilus use list view'
+  dconf:
+    key: '/org/gnome/nautilus/preferences/default-folder-viewer'
+    value: '"list-view"'
+- name: 'Gnome: Nautilus zoom level small'
+  dconf:
+    key: '/org/gnome/nautilus/list-view/default-zoom-level'
+    value: '"small"'
+- name: 'Gnome: Favorite apps'
+  dconf:
+    key: '/org/gnome/shell/favorite-apps'
+    value: "['firefox.desktop', 'org.gnome.Nautilus.desktop', 'com.gexperts.Tilix.desktop', 'gnome-system-monitor.desktop']"
+- name: 'Gnome: Disable Alt+F7 window move'
+  dconf:
+    key: '/org/gnome/desktop/wm/keybindings/begin-move'
+    value: '@as []'
+- name: 'Gnome: Disable Alt+F8 resize window'
+  dconf:
+    key: '/org/gnome/desktop/wm/keybindings/begin-resize'
+    value: '@as []'
+- name: 'Gnome: Window buttons'
+  dconf:
+    key: '/org/gnome/desktop/wm/preferences/button-layout'
+    value: '"appmenu:minimize,close"'
+- name: 'Gnome: Nautilus shortcut'
+  dconf:
+    key: '/org/gnome/settings-daemon/plugins/media-keys/home'
+    value: '"<Super>e"'
+- name: 'Gnome: Tilix  shortcut - binding'
+  dconf:
+    key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/tilix/binding'
+    value: '"<Super>t"'
+- name: 'Gnome: Tilix  shortcut - name'
+  dconf:
+    key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/tilix/name'
+    value: '"Tilix"'
+- name: 'Gnome: Tilix  shortcut - command'
+  dconf:
+    key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/tilix/command'
+    value: '"tilix"'
+- name: 'Gnome: custom shortcuts set'
+  dconf:
+    key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings'
+    value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/tilix/']"
