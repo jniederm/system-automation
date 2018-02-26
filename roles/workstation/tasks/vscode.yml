@@ -95,3 +95,15 @@
   command: 'code --install-extension eamodio.gitlens'
   changed_when: "not last_result.stdout | search('already installed')"
   register: last_result
+- name: 'Install VS Code XML Tools extension'
+  command: 'code --install-extension DotJoshJohnson.xml'
+  changed_when: "not last_result.stdout | search('already installed')"
+  register: last_result
+- name: 'Install VS Code Editor Config extension'
+  command: 'code --install-extension EditorConfig.EditorConfig'
+  changed_when: "not last_result.stdout | search('already installed')"
+  register: last_result
+- name: 'Install VS Code Python extension'
+  command: 'code --install-extension ms-python.python'
+  changed_when: "not last_result.stdout | search('already installed')"
+  register: last_result
