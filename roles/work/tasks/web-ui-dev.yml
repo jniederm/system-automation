@@ -29,3 +29,7 @@
     name: ovirt-engine-yarn
     state: present
   become: yes
+- name: Zanata client
+  dnf:
+    name: zanata-client
+  become: yes
