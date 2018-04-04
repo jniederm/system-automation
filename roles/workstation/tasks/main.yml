@@ -4,6 +4,7 @@
 - import_tasks: gedit.yml
 - import_tasks: nodejs.yml
 - import_tasks: idea.yml
+- import_tasks: gnome-terminal.yml
 - import_tasks: vscode.yml
 - import_tasks: yarn.yml
 - import_tasks: tilix.yml

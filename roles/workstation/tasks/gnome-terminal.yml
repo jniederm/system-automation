@@ -1,0 +1,7 @@
+---
+- name: get gnome terminal profile name
+  include_tasks: gsettings-read.yml schema='org.gnome.Terminal.ProfilesList' key='default' result_var='default_gnome_terminal_schema'
+- name: 'gnome terminal scroll 64000 lines'
+  dconf:
+    key: '/org/gnome/terminal/legacy/profiles:/{{ ":" + default_gnome_terminal_schema[:-1][1:] }}/scrollback-lines'
+    value: '"64000"'

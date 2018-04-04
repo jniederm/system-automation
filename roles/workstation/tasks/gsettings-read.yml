@@ -1,0 +1,6 @@
+- name: 'gsettings get schema={{ schema }} key={{ key }}'
+  command: 'gsettings get {{ schema }} {{ key }}'
+  changed_when: no
+  register: gsettings_read_result
+- name: 'set gsettings schema={{ schema }} key={{ key }} result to var={{ result_var }}'
+  set_fact: '{{ result_var }}={{ gsettings_read_result.stdout }}'
