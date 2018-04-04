@@ -189,9 +189,9 @@
     regexp: '^\s*alias ovirt-push='
     line: "alias ovirt-push='git push origin HEAD:refs/for/master'"
 - name: Setup ovirt-engine-api-model repo
-  include_tasks: git-repo-with-hooks.yml url='ssh://{{rh_nick}}@gerrit.ovirt.org:29418/ovirt-engine-api-model' dest_dir='{{ ansible_env.HOME }}/src/ovirt-engine-api-model'
+  include_tasks: git-repo-with-hooks.yml url='ssh://{{ rh_nick }}@gerrit.ovirt.org:29418/ovirt-engine-api-model' dest_dir='{{ ansible_env.HOME }}/src/ovirt-engine-api-model'
 - name: Setup ovirt-engine repo
-  include_tasks: git-repo-with-hooks.yml url='ssh://{{  rh_nick }}@gerrit.ovirt.org:29418/ovirt-engine' dest_dir='{{ ansible_env.HOME }}/src/ovirt-engine'
+  include_tasks: git-repo-with-hooks.yml url='ssh://{{ rh_nick }}@gerrit.ovirt.org:29418/ovirt-engine' dest_dir='{{ ansible_env.HOME }}/src/ovirt-engine'
 - name: Setup engine repo git commit template
   git_config:
     name: commit.template
