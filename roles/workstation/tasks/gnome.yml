@@ -74,3 +74,4 @@
   dconf:
     key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings'
     value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/tilix/']"
+# win+t show desktop
