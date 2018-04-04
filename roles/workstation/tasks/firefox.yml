@@ -1,3 +1,26 @@
+- name: Is firefox nightly installed
+  stat:
+    path: '{{ ansible_user_dir }}/opt/nightly/latest'
+  register: opt_nightly_latest_stat_result
+- block:
+   - name: '~/opt/nightly dir exists'
+     file:
+       state: directory
+       path: '{{ ansible_user_dir }}/opt/nightly/'
+   - name: Download and unpack firefox nightly
+     unarchive:
+       src: 'https://download.mozilla.org/?product=firefox-nightly-latest-ssl&os=linux64&lang=en-US'
+       dest: '{{ ansible_user_dir }}/opt/nightly/'
+       remote_src: yes
+   - name: Rename directory of firefox nightly
+     command: 'mv {{ansible_user_dir}}/opt/nightly/firefox {{ansible_user_dir}}/opt/nightly/latest'
+  when: not opt_nightly_latest_stat_result.stat.exists
+- name: Link nigltly to PATH
+  file:
+    state: link
+    path: '{{ ansible_user_dir }}/bin/nightly'
+    src: '{{ansible_user_dir}}/opt/nightly/latest/firefox'
+
 # set browser.ctrlTab.previews to true
 # install nightly
 # create ~/bin/nighlty.sh

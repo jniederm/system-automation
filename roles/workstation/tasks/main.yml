@@ -10,7 +10,7 @@
 - import_tasks: vim.yml
 - import_tasks: go.yml
 - import_tasks: gnome.yml
-#- import_tasks: firefox.yml
+- import_tasks: firefox.yml
 
 - name: git user name
   git_config: name=user.name scope=global value={{ git.name }}
