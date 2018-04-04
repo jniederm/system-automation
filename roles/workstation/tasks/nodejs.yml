@@ -46,9 +46,9 @@
 - name: "node.js in PATH"
   lineinfile:
     path: "{{ ansible_user_dir }}/.bash_profile"
-    regexp: '(^| )PATH=\W*\$HOME/opt/nodejs/latest/bin'
-    line: 'PATH=$HOME/opt/nodejs/latest/bin:$PATH'
-    insertbefore: '^\w*export PATH$'
+    regexp: '(^| )PATH=.*\$HOME/opt/nodejs/latest/bin'
+    line: 'export PATH=$HOME/opt/nodejs/latest/bin:$PATH'
+    insertbefore: '^export PATH$'
 - name: "create ~/.npm-prefix"
   file:
     path: "{{ ansible_user_dir }}/.npm-prefix"
@@ -56,8 +56,13 @@
 - name: 'Is .npm-prefix prefix used?'
   command: npm config get prefix
   register: npm_get_prefix_result
+  environment:
+    PATH: '{{ ansible_user_dir }}/opt/nodejs/latest/bin:{{ ansible_env.PATH }}'
+  changed_when: no
 - name: "Use npm prefix ~/.npm-prefix"
   command: "npm config set prefix {{ ansible_user_dir }}/.npm-prefix"
+  environment:
+    PATH: '{{ ansible_user_dir }}/opt/nodejs/latest/bin:{{ ansible_env.PATH }}'
   when: "npm_get_prefix_result.stdout.find(ansible_user_dir + '/.npm-prefix') == -1"
 - name: "Add ~/.npm-prefix/bin to PATH"
   lineinfile:
