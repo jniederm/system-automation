@@ -6,33 +6,42 @@
 - block:
     - name: 'Create idea download tmp dir'
       tempfile:
-        state: dir
+        state: directory
       register: idea_download_dir_result
+    - name: Download idea location
+      uri:
+        url: 'https://data.services.jetbrains.com/products/releases?code=IIU&latest=true&type=release'
+        return_content: yes
+      register: download_url_result
     - name: 'Download idea'
       get_url:
-        url: 'https://download.jetbrains.com/idea/ideaIU-2017.3.1.tar.gz'
-        dest: '{{ idea_dir_stat_result.path }}'
+        url: '{{ download_url_result.content | from_json | json_query("IIU[0].downloads.linux.link") }}'
+        dest: '{{ idea_download_dir_result.path }}'
+      register: download_idea_result
     - name: 'Create idea dir'
       file:
         state: directory
         path: '{{ ansible_user_dir }}/opt/idea'
     - name: 'Extract idea'
       unarchive:
-        src: '{{ idea_download_dir_result.path }}/ideaIU-2017.3.1.tar.gz'
+        src: '{{ download_idea_result.dest }}'
         dest: '{{ ansible_user_dir }}/opt/idea'
         remote_src: yes
         list_files: yes
       register: extract_idea_result
     - name: 'Get extracted idea directory name'
       set_fact:
-        idea_dir_name: "{{ extract_idea_result.files | first | regex_findall('^(.+)/') | first }}"
-    - name: 'Create idea link'
+        idea_dir_name: "{{ extract_idea_result.files | first | regex_findall('^[^/]+') | first }}"
+    - name: 'Create idea latest link'
       file:
         state: link
-        path: '{{ ansible_user_dir }}/idea/latest'
+        path: '{{ ansible_user_dir }}/opt/idea/latest'
         src: './{{ idea_dir_name }}'
   when: 'not idea_dir_stat_result.stat.exists'
-# make sure ~/bin exists
+- name: '~/bin exists'
+  file:
+    state: directory
+    path: '{{ ansible_user_dir }}/bin'
 - name: Idea symlink in bin
   file:
     state: link
